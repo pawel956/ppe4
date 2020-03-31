@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Habiter{% endblock %}
+
+{% block body %}
+    <h1>Create new Habiter</h1>
+
+    {{ include('habiter/_form.html.twig') }}
+
+    <a href="{{ path('habiter_index') }}">back to list</a>
+{% endblock %}
