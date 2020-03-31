@@ -3,7 +3,8 @@
         <div class="row">
             <div class="col-md-4 mx-auto">
                 <h6 class="text-white text-uppercase mt-3 mb-4">Games Market</h6>
-                <p class="text-white">Créée en 2018, cette jeune entreprise vend du matériel multimédia ainsi que des jeux-vidéos à des prix défiants toute concurrence !</p>
+                <p class="text-white">Créée en 2018, cette jeune entreprise vend du matériel multimédia ainsi que des
+                    jeux-vidéos à des prix défiants toute concurrence !</p>
             </div>
             <hr class="clearfix w-100 d-md-none">
             <div class="col-md-2 mx-auto">
@@ -44,63 +45,75 @@
             <hr class="clearfix w-100 d-md-none">
             <div class="col-md-2 mx-auto">
                 <h6 class="text-white text-uppercase mt-3 mb-4">Les applications</h6>
-                <a href="https://play.google.com/store?hl=fr"><img src="/PPE_Projet/images/os/google-play.png" class="img-fluid" width="207px" height="67px"/></a><br><br>
-                <a href="https://www.apple.com/fr/itunes/"><img src="/PPE_Projet/images/os/app-store.png" class="img-fluid" width="207px" height="67px"/></a>
+                <a href="https://play.google.com/store?hl=fr"><img src="#"
+                                                                   class="img-fluid" width="207px"
+                                                                   height="67px"/></a><br><br>
+                <a href="https://www.apple.com/fr/itunes/"><img src="#"
+                                                                class="img-fluid" width="207px" height="67px"/></a>
             </div>
         </div>
     </div>
     <hr>
     <ul class="list-unstyled list-inline text-center">
         <li class="list-inline-item">
-            <img src="/PPE_Projet/images/moyens_de_paiement/paypal.png"/>
+            <img src="#"/>
         </li>
         <li class="list-inline-item">
-            <img src="/PPE_Projet/images/moyens_de_paiement/visa.png"/>
+            <img src="#"/>
         </li>
         <li class="list-inline-item">
-            <img src="/PPE_Projet/images/moyens_de_paiement/mastercard.png"/>
+            <img src="#"/>
         </li>
     </ul>
     <hr>
     <ul class="list-unstyled list-inline text-center">
         <li class="list-inline-item">
             <a class="btn-floating btn-fb mx-1">
-                <a href="https://www.facebook.com"><img src="/PPE_Projet/images/reseaux_sociaux/facebook.png"/></a>
+                <a href="https://www.facebook.com"><img src="#"/></a>
             </a>
         </li>
         <li class="list-inline-item">
             <a class="btn-floating btn-tw mx-1">
-                <a href="https://www.twitter.com"><img src="/PPE_Projet/images/reseaux_sociaux/twitter.png"/></a>
+                <a href="https://www.twitter.com"><img src="#"/></a>
             </a>
         </li>
         <li class="list-inline-item">
             <a class="btn-floating btn-gplus mx-1">
-                <a href="" onclick="alert('Cherchez Games.Market sur Snapchat :)');"><img src="/PPE_Projet/images/reseaux_sociaux/snapchat.png"/></a>
+                <a href="" onclick="alert('Cherchez Games.Market sur Snapchat :)');"><img
+                            src="#"/></a>
             </a>
         </li>
         <li class="list-inline-item">
             <a class="btn-floating btn-li mx-1">
-                <a href="https://www.youtube.com"><img src="/PPE_Projet/images/reseaux_sociaux/youtube.png"/></a>
+                <a href="https://www.youtube.com"><img src="#"/></a>
             </a>
         </li>
         <li class="list-inline-item">
             <a class="btn-floating btn-dribbble mx-1">
-                <a href="" onclick="alert('Cherchez Games.Market sur Instagram :)');"><img src="/PPE_Projet/images/reseaux_sociaux/instagram.png"/></a>
+                <a href="" onclick="alert('Cherchez Games.Market sur Instagram :)');"><img
+                            src="#"/></a>
             </a>
         </li>
     </ul>
-    <div class="footer-copyright text-center py-3 hypertext">&copy; 2018 Copyright &nbsp; <a href="/PPE_Projet/equipe.php">Designed by Pawel &amp; Theo</a></div>
-{#    <?php#}
-{#    if (isset($_SESSION['identifiant'])) {#}
-{#        $identifiant = $_SESSION['identifiant'];#}
-{#        $req = $pdo->query("SELECT id_statut FROM utilisateurs WHERE identifiant='$identifiant'");#}
-{#    $row = $req->fetch();#}
-{#    if ($row['id_statut'] != 1) {#}
-{#    ?>#}
-    <div class="text-center hypertext"><a href="/PPE_Projet/administration/index.php">Administration</a></div>
+    <div class="footer-copyright text-center py-3 hypertext">&copy; <span id="year"></span> Copyright &nbsp; <a
+                href="/PPE_Projet/equipe.php">Designed by Pawel &amp; Theo</a></div>
+    {#    <?php#}
+    {#    if (isset($_SESSION['identifiant'])) {#}
+    {#        $identifiant = $_SESSION['identifiant'];#}
+    {#        $req = $pdo->query("SELECT id_statut FROM utilisateurs WHERE identifiant='$identifiant'");#}
+    {#    $row = $req->fetch();#}
+    {#    if ($row['id_statut'] != 1) {#}
+    {#    ?>#}
+    <div class="text-center hypertext"><a href="#">Administration</a></div>
     <br>
-{#    <?php#}
-{#        }#}
-{#    }#}
-{#    ?>#}
+    {#    <?php#}
+    {#        }#}
+    {#    }#}
+    {#    ?>#}
 </footer>
+
+<script>
+    $(document).ready(function () {
+        $("#year").html(new Date().getFullYear());
+    });
+</script>
