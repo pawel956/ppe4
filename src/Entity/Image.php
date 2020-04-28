@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Image
  *
- * @ORM\Table(name="image", indexes={@ORM\Index(name="id_type_image", columns={"id_type_image"})})
+ * @ORM\Table(name="image", indexes={@ORM\Index(name="id_magasin", columns={"id_magasin"}), @ORM\Index(name="id_type_image", columns={"id_type_image"}), @ORM\Index(name="id_produit", columns={"id_produit"})})
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
 class Image
@@ -29,16 +29,29 @@ class Image
     private $libelle;
 
     /**
-     * @var string|null
+     * @var \Magasin
      *
-     * @ORM\Column(name="chemin", type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="Magasin")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_magasin", referencedColumnName="id")
+     * })
      */
-    private $chemin;
+    private $idMagasin;
+
+    /**
+     * @var \Produit
+     *
+     * @ORM\ManyToOne(targetEntity="Produit", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_produit", referencedColumnName="id")
+     * })
+     */
+    private $idProduit;
 
     /**
      * @var \TypeImage
      *
-     * @ORM\ManyToOne(targetEntity="TypeImage")
+     * @ORM\ManyToOne(targetEntity="TypeImage", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_type_image", referencedColumnName="id")
      * })
@@ -62,14 +75,26 @@ class Image
         return $this;
     }
 
-    public function getChemin(): ?string
+    public function getIdMagasin(): ?Magasin
     {
-        return $this->chemin;
+        return $this->idMagasin;
     }
 
-    public function setChemin(?string $chemin): self
+    public function setIdMagasin(?Magasin $idMagasin): self
     {
-        $this->chemin = $chemin;
+        $this->idMagasin = $idMagasin;
+
+        return $this;
+    }
+
+    public function getIdProduit(): ?Produit
+    {
+        return $this->idProduit;
+    }
+
+    public function setIdProduit(?Produit $idProduit): self
+    {
+        $this->idProduit = $idProduit;
 
         return $this;
     }

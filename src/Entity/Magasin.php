@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Magasin
  *
- * @ORM\Table(name="magasin", indexes={@ORM\Index(name="id_image", columns={"id_image"}), @ORM\Index(name="id_propriete", columns={"id_propriete"})})
+ * @ORM\Table(name="magasin", indexes={@ORM\Index(name="id_propriete", columns={"id_propriete"})})
  * @ORM\Entity(repositoryClass="App\Repository\MagasinRepository")
  */
 class Magasin
@@ -62,16 +62,6 @@ class Magasin
      * @ORM\Column(name="courriel", type="string", length=255, nullable=true)
      */
     private $courriel;
-
-    /**
-     * @var \Image
-     *
-     * @ORM\ManyToOne(targetEntity="Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_image", referencedColumnName="id")
-     * })
-     */
-    private $idImage;
 
     /**
      * @var \Propriete
@@ -156,18 +146,6 @@ class Magasin
     public function setCourriel(?string $courriel): self
     {
         $this->courriel = $courriel;
-
-        return $this;
-    }
-
-    public function getIdImage(): ?Image
-    {
-        return $this->idImage;
-    }
-
-    public function setIdImage(?Image $idImage): self
-    {
-        $this->idImage = $idImage;
 
         return $this;
     }

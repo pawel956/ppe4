@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Image;
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -17,6 +18,23 @@ class ProduitRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Produit::class);
+    }
+
+    /**
+     * @return Produit[] Returns an array of Produit objects
+     */
+    public function findLastFourProducts()
+    {
+        return $this->getEntityManager()
+            ->getRepository(Image::class)
+            ->createQueryBuilder('i')
+            ->select('i')
+            ->join('i.idProduit', 'p')
+            ->where('i.idProduit IS NOT NULL')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
