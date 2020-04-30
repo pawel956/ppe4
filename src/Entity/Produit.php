@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Produit
  *
- * @ORM\Table(name="produit")
+ * @ORM\Table(name="produit", indexes={@ORM\Index(name="id_marque", columns={"id_marque"}), @ORM\Index(name="id_type_produit", columns={"id_type_produit"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit
@@ -50,11 +50,24 @@ class Produit
     private $prixTemporaire;
 
     /**
-     * @var int|null
+     * @var \TypeProduit
      *
-     * @ORM\Column(name="stock", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="TypeProduit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_type_produit", referencedColumnName="id")
+     * })
      */
-    private $stock;
+    private $idTypeProduit;
+
+    /**
+     * @var \Marque
+     *
+     * @ORM\ManyToOne(targetEntity="Marque")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_marque", referencedColumnName="id")
+     * })
+     */
+    private $idMarque;
 
     public function getId(): ?int
     {
@@ -109,16 +122,29 @@ class Produit
         return $this;
     }
 
-    public function getStock(): ?int
+    public function getIdTypeProduit(): ?TypeProduit
     {
-        return $this->stock;
+        return $this->idTypeProduit;
     }
 
-    public function setStock(?int $stock): self
+    public function setIdTypeProduit(?TypeProduit $idTypeProduit): self
     {
-        $this->stock = $stock;
+        $this->idTypeProduit = $idTypeProduit;
 
         return $this;
     }
+
+    public function getIdMarque(): ?Marque
+    {
+        return $this->idMarque;
+    }
+
+    public function setIdMarque(?Marque $idMarque): self
+    {
+        $this->idMarque = $idMarque;
+
+        return $this;
+    }
+
 
 }

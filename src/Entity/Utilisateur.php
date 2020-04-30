@@ -3,227 +3,133 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Utilisateur
- *
- * @ORM\Table(name="utilisateur", indexes={@ORM\Index(name="id_image", columns={"id_image"}), @ORM\Index(name="id_statut", columns={"id_statut"}), @ORM\Index(name="id_genre", columns={"id_genre"})})
+ * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
  */
-class Utilisateur
+class Utilisateur implements UserInterface
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="banni", type="boolean", nullable=false)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $banni = '0';
+    private $email;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     * @ORM\Column(type="json")
      */
-    private $nom;
+    private $roles = [];
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
-    private $prenom;
+    private $password;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="courriel", type="string", length=255, nullable=true)
+     * @var string the clear password temporary
      */
-    private $courriel;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="telephone", type="string", length=20, nullable=true)
-     */
-    private $telephone;
-
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="date_naissance", type="date", nullable=true)
-     */
-    private $dateNaissance;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="mot_de_passe", type="string", length=255, nullable=true)
-     */
-    private $motDePasse;
-
-    /**
-     * @var \Genre
-     *
-     * @ORM\ManyToOne(targetEntity="Genre")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_genre", referencedColumnName="id")
-     * })
-     */
-    private $idGenre;
-
-    /**
-     * @var \Image
-     *
-     * @ORM\ManyToOne(targetEntity="Image")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_image", referencedColumnName="id")
-     * })
-     */
-    private $idImage;
-
-    /**
-     * @var \Statut
-     *
-     * @ORM\ManyToOne(targetEntity="Statut")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_statut", referencedColumnName="id")
-     * })
-     */
-    private $idStatut;
+    private $plainPassword;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBanni(): ?bool
+    public function getEmail(): ?string
     {
-        return $this->banni;
+        return $this->email;
     }
 
-    public function setBanni(bool $banni): self
+    public function setEmail(string $email): self
     {
-        $this->banni = $banni;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getNom(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->nom;
+        return (string)$this->email;
     }
 
-    public function setNom(?string $nom): self
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        $this->nom = $nom;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
     {
-        return $this->prenom;
+        return (string)$this->password;
     }
 
-    public function setPrenom(?string $prenom): self
+    public function setPassword(string $password): self
     {
-        $this->prenom = $prenom;
+        $this->password = $password;
 
         return $this;
     }
 
-    public function getCourriel(): ?string
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
     {
-        return $this->courriel;
+        return $this->plainPassword;
     }
 
-    public function setCourriel(?string $courriel): self
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
     {
-        $this->courriel = $courriel;
-
-        return $this;
+        $this->plainPassword = $plainPassword;
     }
 
-    public function getTelephone(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
     {
-        return $this->telephone;
+        // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    public function setTelephone(?string $telephone): self
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
     {
-        $this->telephone = $telephone;
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
-
-    public function getDateNaissance(): ?\DateTimeInterface
-    {
-        return $this->dateNaissance;
-    }
-
-    public function setDateNaissance(?\DateTimeInterface $dateNaissance): self
-    {
-        $this->dateNaissance = $dateNaissance;
-
-        return $this;
-    }
-
-    public function getMotDePasse(): ?string
-    {
-        return $this->motDePasse;
-    }
-
-    public function setMotDePasse(?string $motDePasse): self
-    {
-        $this->motDePasse = $motDePasse;
-
-        return $this;
-    }
-
-    public function getIdGenre(): ?Genre
-    {
-        return $this->idGenre;
-    }
-
-    public function setIdGenre(?Genre $idGenre): self
-    {
-        $this->idGenre = $idGenre;
-
-        return $this;
-    }
-
-    public function getIdImage(): ?Image
-    {
-        return $this->idImage;
-    }
-
-    public function setIdImage(?Image $idImage): self
-    {
-        $this->idImage = $idImage;
-
-        return $this;
-    }
-
-    public function getIdStatut(): ?Statut
-    {
-        return $this->idStatut;
-    }
-
-    public function setIdStatut(?Statut $idStatut): self
-    {
-        $this->idStatut = $idStatut;
-
-        return $this;
-    }
-
-
 }

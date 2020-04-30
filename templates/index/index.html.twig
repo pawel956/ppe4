@@ -1,15 +1,14 @@
-{% extends 'base_default.html.twig' %}
+{% extends 'base_default_footer.html.twig' %}
 
 {% block title %} - Accueil{% endblock %}
 
 {% block core %}
+    <br><br><br><br><br>
     <div class="content">
-        <br><br>
-        <center><h2>Nos derniers produits</h2></center>
-        <br/>
+        <div style="text-align: center;"><h2>Nos derniers produits</h2></div>
+        <br>
         <div class="row text-center">
             {% for produit in produits %}
-
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="card">
                         <div class="parent">
@@ -28,21 +27,18 @@
                             </h5>
                         </div>
                         <div class="card-footer">
-                            <a class="card-text btn btn-primary btn-sm" href="/PPE_Projet/index.php?reference=' . $row['identifiant'] . '">Détails</a>&nbsp;';
-                            if (!isset($_SESSION['identifiant'])) { // Si on ne dÃ©tecte pas de session alors on verra
-                            les liens ci-dessous
-                            echo '<a class="btn btn-success btn-sm" href="/PPE_Projet/compte/connexion.php">Ajouter au
-                                panier</a>';
-                            } else { // Sinon s'il y a une session alors on verra les liens ci-dessous
-                            echo '<a class="btn btn-success btn-sm"
-                                     href="/PPE_Projet/scripts/ajout_panier.php?reference= ' . $row['identifiant'] . '&pageprevious=index">Ajouter
-                                au panier</a>';
-                            }
-                            ?>
+                            <a class="card-text btn btn-primary btn-sm"
+                               href="/PPE_Projet/index.php?reference=' . $row['identifiant'] . '">Détails</a>
+                            {% if not is_granted('ROLE_USER') %}
+                                <a class="btn btn-success btn-sm" href="{{ path('app_login') }}">Ajouter au panier</a>
+                            {% else %}
+                                <a class="btn btn-success btn-sm"
+                                   href="/PPE_Projet/scripts/ajout_panier.php?reference= ' . $row['identifiant'] . '&pageprevious=index">Ajouter
+                                    au panier</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-
             {% endfor %}
         </div>
     </div>

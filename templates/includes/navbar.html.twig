@@ -16,47 +16,47 @@
         <div class="dropdown dropleft">
             <i class="hypertext fas fa-user" data-toggle="dropdown"></i>
             <div class="dropdown-menu">
-{#                <?php#}
-{#                if (!isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
-{#                    ?>#}
+                {#                <?php#}
+                {#                if (!isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
+                {#                    ?>#}
                 <a class="dropdown-item" href="/PPE_Projet/compte/inscription.php">Inscription</a>
-                <a class="dropdown-item" href="/PPE_Projet/compte/connexion.php">Connexion</a>
-{#                <?php#}
-{#                } else { // Sinon s'il y a une session alors on verra les liens ci-dessous#}
-{#                    $identifiant = $_SESSION['identifiant'];#}
-{#                    $req = "SELECT * FROM utilisateurs WHERE identifiant='$identifiant'";#}
-{#                    $res = $pdo->query($req);#}
-{#                $row = $res->fetch();#}
+                <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+                {#                <?php#}
+                {#                } else { // Sinon s'il y a une session alors on verra les liens ci-dessous#}
+                {#                    $identifiant = $_SESSION['identifiant'];#}
+                {#                    $req = "SELECT * FROM utilisateurs WHERE identifiant='$identifiant'";#}
+                {#                    $res = $pdo->query($req);#}
+                {#                $row = $res->fetch();#}
 
-{#                echo "<a class='dropdown-item' href='/PPE_Projet/compte/profil.php'><b>{$row['nom']} {$row['prenom']}</b></a>";#}
-{#                ?>#}
+                {#                echo "<a class='dropdown-item' href='/PPE_Projet/compte/profil.php'><b>{$row['nom']} {$row['prenom']}</b></a>";#}
+                {#                ?>#}
                 <hr>
                 <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>
                 <hr>
                 <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>
-{#                <?php#}
-{#                }#}
-{#                ?>#}
+                {#                <?php#}
+                {#                }#}
+                {#                ?>#}
             </div>
     </button>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#shop">
         <a href="/PPE_Projet/compte/panier.php"><span class="fas fa-shopping-cart"></span></a>
-{#        <?php#}
-{#        if (isset($_SESSION['identifiant'])) {#}
-{#            ?>#}
-        <div class = "contenu_panier_mobile">
-{#            <?php#}
-{#                $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
-{#                $res = $pdo->query($req);#}
-{#            $row = $res->fetchAll();#}
-{#            if (($row[0][0]) == 0) {#}
-{#            echo "0";#}
-{#            } else {#}
-{#            echo $row[0][0];#}
-{#            }#}
-{#            }#}
-{#            ?>#}
+        {#        <?php#}
+        {#        if (isset($_SESSION['identifiant'])) {#}
+        {#            ?>#}
+        <div class="contenu_panier_mobile">
+            {#            <?php#}
+            {#                $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
+            {#                $res = $pdo->query($req);#}
+            {#            $row = $res->fetchAll();#}
+            {#            if (($row[0][0]) == 0) {#}
+            {#            echo "0";#}
+            {#            } else {#}
+            {#            echo $row[0][0];#}
+            {#            }#}
+            {#            }#}
+            {#            ?>#}
     </button>
 
     <div class="collapse navbar-collapse" id="menu">
@@ -70,7 +70,8 @@
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=jeux">Jeux</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=consoles">Consoles</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=digital">Cartes PSN & DLC</a>
+                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=digital">Cartes
+                            PSN & DLC</a>
                     </div>
                 </div>
             </li>
@@ -84,7 +85,8 @@
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=jeux">Jeux</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=consoles">Consoles</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=digital">Cartes XBOX LIVE & DLC</a>
+                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=digital">Cartes
+                            XBOX LIVE & DLC</a>
                     </div>
                 </div>
             </li>
@@ -95,10 +97,13 @@
                         SWITCH
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=jeux">Jeux</a>
+                        <a class="dropdown-item"
+                           href="/PPE_Projet/produits.php?plateforme=switch&categorie=jeux">Jeux</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=consoles">Consoles</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=digital">Contenu digital</a>
+                        <a class="dropdown-item"
+                           href="/PPE_Projet/produits.php?plateforme=switch&categorie=accessoires">Accessoires</a>
+                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=digital">Contenu
+                            digital</a>
                     </div>
                 </div>
             </li>
@@ -112,7 +117,8 @@
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=jeux">Jeux</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=consoles">Consoles</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=digital">Contenu digital</a>
+                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=digital">Contenu
+                            digital</a>
                     </div>
                 </div>
             </li>
@@ -125,7 +131,8 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=jeux">Jeux</a>
                         <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=digital">Contenu digital</a>
+                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=digital">Contenu
+                            digital</a>
                     </div>
                 </div>
             </li>
@@ -135,7 +142,8 @@
 
     <div class="collapse navbar-collapse centrage" id="search">
         <div class="resultat">
-            <input class="form-control-search mr-sm-3 text" name="recherche" id="recherche" type="text" placeholder="Recherche ...">
+            <input class="form-control-search mr-sm-3 text" name="recherche" id="recherche" type="text"
+                   placeholder="Recherche ...">
             <button class="btn btn-dark" type="submit"><i class="fas fa-search"></i></button>
             <div class="resultat-result" id="resultat"></div>
         </div>
@@ -146,114 +154,120 @@
         <div class="dropdown dropleft">
             <i class=" nav-link hypertext fas fa-user" data-toggle="dropdown"></i>
             <div class="dropdown-menu">
-{#                <?php#}
-{#                if (!isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
-{#                    ?>#}
-                <a class="dropdown-item" href="/PPE_Projet/compte/inscription.php">Inscription</a>
-                <a class="dropdown-item" href="/PPE_Projet/compte/connexion.php">Connexion</a>
-{#                <?php#}
-{#                } else { // Sinon s'il y a une session alors on verra les liens ci-dessous#}
-{#                    $identifiant = $_SESSION['identifiant'];#}
-{#                    $req = "SELECT * FROM utilisateurs WHERE identifiant='$identifiant'";#}
-{#                    $res = $pdo->query($req);#}
-{#                $row = $res->fetch();#}
+                {% if not is_granted('ROLE_USER') %}
+                    <a class="dropdown-item" href="/PPE_Projet/compte/inscription.php">Inscription</a>
+                    <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+                {% else %}
+                    <a class="dropdown-item" href="/PPE_Projet/compte/profil.php"><b>{$row['nom']} {$row['prenom']}</b></a>
+                    <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>
+                {% endif %}
+                {#                <?php#}
+                {#                } else { // Sinon s'il y a une session alors on verra les liens ci-dessous#}
+                {#                    $identifiant = $_SESSION['identifiant'];#}
+                {#                    $req = "SELECT * FROM utilisateurs WHERE identifiant='$identifiant'";#}
+                {#                    $res = $pdo->query($req);#}
+                {#                $row = $res->fetch();#}
 
-{#                echo "<a class='dropdown-item' href='/PPE_Projet/compte/profil.php'><b>{$row['nom']} {$row['prenom']}</b></a>";#}
-{#                ?>#}
-{#                <hr>#}
-{#                <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>#}
-{#                <hr>#}
-{#                <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>#}
-{#                <?php#}
-{#                }#}
-{#                ?>#}
+                {#                echo "<a class='dropdown-item' href='/PPE_Projet/compte/profil.php'><b>{$row['nom']} {$row['prenom']}</b></a>";#}
+                {#                ?>#}
+                {#                <hr>#}
+                {#                <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>#}
+                {#                <hr>#}
+                {#                <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>#}
+                {#                <?php#}
+                {#                }#}
+                {#                ?>#}
             </div>
         </div>
-{#        <?php#}
-{#        if (isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
-{#            $identifiant = $_SESSION['identifiant'];#}
-{#            $req = "SELECT * FROM panier, utilisateurs, produits WHERE panier.identifiant=utilisateurs.identifiant AND panier.reference=produits.identifiant AND panier.identifiant='$identifiant'";#}
-{#            $res = $pdo->query($req);#}
-{#        ?>#}
-{#        <div class="collapse navbar-collapse" id="shop">#}
-{#            <div class="dropdown dropleft">#}
-{#                <a class="nav-link hypertext" href="/PPE_Projet/compte/panier.php" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-shopping-cart" ></i></a>#}
-{#                <?php#}
-{#                    $compteur = $res->fetchAll();#}
-{#                if (count($compteur) > 0) {#}
-{#                ?>#}
-{#                <ul class="dropdown-menu dropdown-cart" role="menu">#}
-{#                    <?php#}
-{#                            $req = "SELECT * FROM panier, utilisateurs, produits WHERE panier.identifiant=utilisateurs.identifiant AND panier.reference=produits.identifiant AND panier.identifiant='$identifiant'";#}
-{#                            $res = $pdo->query($req);#}
-{#                    while ($row = $res->fetch()) {#}
-{#                    ?>#}
-{#                    <li>#}
-{#                                    <span class="item">#}
-{#                                        <span class="item-left padding_recap">#}
-{#                                            <img class="resize_navbar" src="<?php echo $row['image']; ?>" alt="" />#}
-{#                                            <span class="item-info">#}
-{#                                                <span class="uppercase"><?php echo $row['plateforme']; ?> x <?php echo $row['qte']; ?> </span>#}
-{#                                                <span><?php echo $row['prix']; ?> &euro; / unité </span>#}
-{#                                            </span>#}
-{#                                        </span>#}
-{#                                        <span class="item-right">#}
-{#                                            <a href="/PPE_Projet/scripts/traitement_supprimer_produit?identifiant_produit=<?php echo $row['identifiant']; ?>" class="btn btn-xs btn-danger pull-right">x</a>#}
-{#                                        </span>#}
-{#                                    </span>#}
-{#                    </li>#}
-{#                    <?php#}
-{#                            }#}
-{#                            ?>#}
-{#                    <br />#}
-{#                    <center><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a></li></center>#}
-{#                </ul>#}
-{#                <?php#}
-{#                    }#}
-{#                    ?>#}
-{#            </div>#}
-{#            <?php#}
-{#            } else {#}
-{#                ?>#}
-{#            <div class="collapse navbar-collapse" id="shop">#}
-{#                <a class="nav-link hypertext" href="/PPE_Projet/compte/connexion.php"><i class="fas fa-shopping-cart"></i></a>#}
-{#                <?php#}
-{#                }#}
-{#                ?>#}
-{#                <?php#}
-{#                if (isset($_SESSION['identifiant'])) {#}
-{#                    ?>#}
-{#                <div class = "contenu_panier">#}
-{#                    <?php#}
-{#                        $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
-{#                        $res = $pdo->query($req);#}
-{#                    $row = $res->fetchAll();#}
-{#                    if (($row[0][0]) == 0) {#}
-{#                    echo "0";#}
-{#                    } else {#}
-{#                    echo $row[0][0];#}
-{#                    }#}
-{#                    }#}
-{#                    ?>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
+        {#        <?php#}
+        {#        if (isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
+        {#            $identifiant = $_SESSION['identifiant'];#}
+        {#            $req = "SELECT * FROM panier, utilisateurs, produits WHERE panier.identifiant=utilisateurs.identifiant AND panier.reference=produits.identifiant AND panier.identifiant='$identifiant'";#}
+        {#            $res = $pdo->query($req);#}
+        {#        ?>#}
+        {#        <div class="collapse navbar-collapse" id="shop">#}
+        {#            <div class="dropdown dropleft">#}
+        {#                <a class="nav-link hypertext" href="/PPE_Projet/compte/panier.php" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-shopping-cart" ></i></a>#}
+        {#                <?php#}
+        {#                    $compteur = $res->fetchAll();#}
+        {#                if (count($compteur) > 0) {#}
+        {#                ?>#}
+        {#                <ul class="dropdown-menu dropdown-cart" role="menu">#}
+        {#                    <?php#}
+        {#                            $req = "SELECT * FROM panier, utilisateurs, produits WHERE panier.identifiant=utilisateurs.identifiant AND panier.reference=produits.identifiant AND panier.identifiant='$identifiant'";#}
+        {#                            $res = $pdo->query($req);#}
+        {#                    while ($row = $res->fetch()) {#}
+        {#                    ?>#}
+        {#                    <li>#}
+        {#                                    <span class="item">#}
+        {#                                        <span class="item-left padding_recap">#}
+        {#                                            <img class="resize_navbar" src="<?php echo $row['image']; ?>" alt="" />#}
+        {#                                            <span class="item-info">#}
+        {#                                                <span class="uppercase"><?php echo $row['plateforme']; ?> x <?php echo $row['qte']; ?> </span>#}
+        {#                                                <span><?php echo $row['prix']; ?> &euro; / unité </span>#}
+        {#                                            </span>#}
+        {#                                        </span>#}
+        {#                                        <span class="item-right">#}
+        {#                                            <a href="/PPE_Projet/scripts/traitement_supprimer_produit?identifiant_produit=<?php echo $row['identifiant']; ?>" class="btn btn-xs btn-danger pull-right">x</a>#}
+        {#                                        </span>#}
+        {#                                    </span>#}
+        {#                    </li>#}
+        {#                    <?php#}
+        {#                            }#}
+        {#                            ?>#}
+        {#                    <br />#}
+        {#                    <center><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a></li></center>#}
+        {#                </ul>#}
+        {#                <?php#}
+        {#                    }#}
+        {#                    ?>#}
+        {#            </div>#}
+        {#            <?php#}
+        {#            } else {#}
+        {#                ?>#}
+        {#            <div class="collapse navbar-collapse" id="shop">#}
+        {#                <a class="nav-link hypertext" href="/PPE_Projet/compte/connexion.php"><i class="fas fa-shopping-cart"></i></a>#}
+        {#                <?php#}
+        {#                }#}
+        {#                ?>#}
+        {#                <?php#}
+        {#                if (isset($_SESSION['identifiant'])) {#}
+        {#                    ?>#}
+        {#                <div class = "contenu_panier">#}
+        {#                    <?php#}
+        {#                        $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
+        {#                        $res = $pdo->query($req);#}
+        {#                    $row = $res->fetchAll();#}
+        {#                    if (($row[0][0]) == 0) {#}
+        {#                    echo "0";#}
+        {#                    } else {#}
+        {#                    echo $row[0][0];#}
+        {#                    }#}
+        {#                    }#}
+        {#                    ?>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
     </div>
 </nav>
 
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Vous nous quittez ?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">x</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">Sélectionnez "Se Déconnecter" si vous &#234;tes pr&#234;t &#224; mettre fin &#224; votre session en cours.</div>
+            <div class="modal-body">Sélectionnez "Se déconnecter" si vous êtes prêt à mettre fin à votre session en
+                cours.
+            </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                <a class="btn btn-primary" href="/PPE_Projet/compte/deconnexion.php">Se déconnecter</a>
+                <a class="btn btn-primary" href="{{ path('app_logout') }}">Se déconnecter</a>
             </div>
         </div>
     </div>

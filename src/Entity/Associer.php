@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Associer
  *
- * @ORM\Table(name="associer", indexes={@ORM\Index(name="id_produit", columns={"id_produit"}), @ORM\Index(name="id_categorie", columns={"id_categorie"})})
+ * @ORM\Table(name="associer", indexes={@ORM\Index(name="id_produit", columns={"id_produit"}), @ORM\Index(name="id_genre_produit", columns={"id_genre_produit"})})
  * @ORM\Entity(repositoryClass="App\Repository\AssocierRepository")
  */
 class Associer
@@ -32,14 +32,14 @@ class Associer
     private $idProduit;
 
     /**
-     * @var \Categorie
+     * @var \GenreProduit
      *
-     * @ORM\ManyToOne(targetEntity="Categorie")
+     * @ORM\ManyToOne(targetEntity="GenreProduit")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_categorie", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_genre_produit", referencedColumnName="id")
      * })
      */
-    private $idCategorie;
+    private $idGenreProduit;
 
     public function getId(): ?int
     {
@@ -58,14 +58,14 @@ class Associer
         return $this;
     }
 
-    public function getIdCategorie(): ?Categorie
+    public function getIdGenreProduit(): ?GenreProduit
     {
-        return $this->idCategorie;
+        return $this->idGenreProduit;
     }
 
-    public function setIdCategorie(?Categorie $idCategorie): self
+    public function setIdGenreProduit(?GenreProduit $idGenreProduit): self
     {
-        $this->idCategorie = $idCategorie;
+        $this->idGenreProduit = $idGenreProduit;
 
         return $this;
     }
