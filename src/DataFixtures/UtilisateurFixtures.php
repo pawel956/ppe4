@@ -19,8 +19,14 @@ class UtilisateurFixtures extends Fixture
     public function load(ObjectManager $entityManager)
     {
         $Utilisateur = new Utilisateur();
-        $Utilisateur->setEmail('radyna.pawel@gmail.com');
+        $Utilisateur->setEmail('user@gmail.com');
         $Utilisateur->setPlainPassword('toto');
+        $this->utilisateurService->save($Utilisateur);
+
+        $Utilisateur = new Utilisateur();
+        $Utilisateur->setEmail('admin@gmail.com');
+        $Utilisateur->setPlainPassword('toto');
+        $Utilisateur->setRoles(['ROLE_ADMIN']);
         $this->utilisateurService->save($Utilisateur);
     }
 }

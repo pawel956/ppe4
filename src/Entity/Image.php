@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Image
  *
- * @ORM\Table(name="image", indexes={@ORM\Index(name="id_magasin", columns={"id_magasin"}), @ORM\Index(name="id_type_image", columns={"id_type_image"}), @ORM\Index(name="id_produit", columns={"id_produit"})})
+ * @ORM\Table(name="image", indexes={@ORM\Index(name="id_produit", columns={"id_produit"}), @ORM\Index(name="id_type_image", columns={"id_type_image"}), @ORM\Index(name="id_magasin", columns={"id_magasin"})})
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
 class Image
@@ -41,7 +41,7 @@ class Image
     /**
      * @var \Produit
      *
-     * @ORM\ManyToOne(targetEntity="Produit", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Produit")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_produit", referencedColumnName="id")
      * })
@@ -51,7 +51,7 @@ class Image
     /**
      * @var \TypeImage
      *
-     * @ORM\ManyToOne(targetEntity="TypeImage", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="TypeImage")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_type_image", referencedColumnName="id")
      * })
