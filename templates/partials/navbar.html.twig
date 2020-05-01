@@ -16,126 +16,60 @@
         <div class="dropdown dropleft">
             <i class="hypertext fas fa-user" data-toggle="dropdown"></i>
             <div class="dropdown-menu">
-                {#                <?php#}
-                {#                if (!isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
-                {#                    ?>#}
-                <a class="dropdown-item" href="/PPE_Projet/compte/inscription.php">Inscription</a>
-                <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
-                {#                <?php#}
-                {#                } else { // Sinon s'il y a une session alors on verra les liens ci-dessous#}
-                {#                    $identifiant = $_SESSION['identifiant'];#}
-                {#                    $req = "SELECT * FROM utilisateurs WHERE identifiant='$identifiant'";#}
-                {#                    $res = $pdo->query($req);#}
-                {#                $row = $res->fetch();#}
-
-                {#                echo "<a class='dropdown-item' href='/PPE_Projet/compte/profil.php'><b>{$row['nom']} {$row['prenom']}</b></a>";#}
-                {#                ?>#}
-                <hr>
-                <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>
-                <hr>
-                <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>
-                {#                <?php#}
-                {#                }#}
-                {#                ?>#}
+                {% if not is_granted('ROLE_USER') %}
+                    <a class="dropdown-item" href="/PPE_Projet/compte/inscription.php">Inscription</a>
+                    <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+                {% else %}
+                    <a class="dropdown-item" href="/PPE_Projet/compte/profil.php"><b>Nom prénom</b></a>
+                    <hr>
+                    <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>
+                    <hr>
+                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>
+                {% endif %}
             </div>
+        </div>
     </button>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#shop">
-        <a href="/PPE_Projet/compte/panier.php"><span class="fas fa-shopping-cart"></span></a>
-        {#        <?php#}
-        {#        if (isset($_SESSION['identifiant'])) {#}
-        {#            ?>#}
-        <div class="contenu_panier_mobile">
-            {#            <?php#}
-            {#                $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
-            {#                $res = $pdo->query($req);#}
-            {#            $row = $res->fetchAll();#}
-            {#            if (($row[0][0]) == 0) {#}
-            {#            echo "0";#}
-            {#            } else {#}
-            {#            echo $row[0][0];#}
-            {#            }#}
-            {#            }#}
-            {#            ?>#}
+        <a href="/PPE_Projet/compte/panier.php">
+            <span class="fas fa-shopping-cart"></span>
+        </a>
+        {% if is_granted('ROLE_USER') %}
+            <div class="contenu_panier_mobile">
+                {#            <?php#}
+                {#                $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
+                {#                $res = $pdo->query($req);#}
+                {#            $row = $res->fetchAll();#}
+                {#            if (($row[0][0]) == 0) {#}
+                {#            echo "0";#}
+                {#            } else {#}
+                {#            echo $row[0][0];#}
+                {#            }#}
+                {#            }#}
+                {#            ?>#}
+            </div>
+        {% endif %}
     </button>
 
     <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <div class="nav2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        PS4
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=jeux">Jeux</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=consoles">Consoles</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ps4&categorie=digital">Cartes
-                            PSN & DLC</a>
+            {% for marque in partials.marques %}
+                <li class="nav-item dropdown">
+                    <div class="nav2">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            {{ marque.libelle|upper }}
+                        </a>
+                        <div class="dropdown-menu">
+                            {% for typeProduit in partials.typeProduits %}
+                                {% if marque.libelle != 'Steam' or typeProduit.libelle != 'Consoles' %}
+                                    <a class="dropdown-item"
+                                       href="/PPE_Projet/produits.php?plateforme=ps4&categorie=jeux">{{ typeProduit.libelle }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <div class="nav2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        XBOX
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=jeux">Jeux</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=consoles">Consoles</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=xbox&categorie=digital">Cartes
-                            XBOX LIVE & DLC</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <div class="nav2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        SWITCH
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item"
-                           href="/PPE_Projet/produits.php?plateforme=switch&categorie=jeux">Jeux</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=consoles">Consoles</a>
-                        <a class="dropdown-item"
-                           href="/PPE_Projet/produits.php?plateforme=switch&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=switch&categorie=digital">Contenu
-                            digital</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <div class="nav2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        3DS/2DS
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=jeux">Jeux</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=consoles">Consoles</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=ds&categorie=digital">Contenu
-                            digital</a>
-                    </div>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <div class="nav2">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        PC
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=jeux">Jeux</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=accessoires">Accessoires</a>
-                        <a class="dropdown-item" href="/PPE_Projet/produits.php?plateforme=pc&categorie=digital">Contenu
-                            digital</a>
-                    </div>
-                </div>
-            </li>
+                </li>
+            {% endfor %}
         </ul>
     </div>
 
@@ -158,28 +92,22 @@
                     <a class="dropdown-item" href="/PPE_Projet/compte/inscription.php">Inscription</a>
                     <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
                 {% else %}
-                    <a class="dropdown-item" href="/PPE_Projet/compte/profil.php"><b>{$row['nom']} {$row['prenom']}</b></a>
+                    <a class="dropdown-item" href="/PPE_Projet/compte/profil.php"><b>Nom prénom</b></a>
+                    <hr>
                     <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>
+                    <hr>
                     <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>
                 {% endif %}
-                {#                <?php#}
-                {#                } else { // Sinon s'il y a une session alors on verra les liens ci-dessous#}
-                {#                    $identifiant = $_SESSION['identifiant'];#}
-                {#                    $req = "SELECT * FROM utilisateurs WHERE identifiant='$identifiant'";#}
-                {#                    $res = $pdo->query($req);#}
-                {#                $row = $res->fetch();#}
-
-                {#                echo "<a class='dropdown-item' href='/PPE_Projet/compte/profil.php'><b>{$row['nom']} {$row['prenom']}</b></a>";#}
-                {#                ?>#}
-                {#                <hr>#}
-                {#                <a class="dropdown-item" href="/PPE_Projet/compte/mes_commandes.php">Mes commandes</a>#}
-                {#                <hr>#}
-                {#                <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal" href="#">Déconnexion</a>#}
-                {#                <?php#}
-                {#                }#}
-                {#                ?>#}
             </div>
         </div>
+
+        {% if not is_granted('ROLE_USER') %}
+            <div class="collapse navbar-collapse" id="shop">
+                <a class="nav-link hypertext" href="{{ path('app_login') }}">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </div>
+        {% endif %}
         {#        <?php#}
         {#        if (isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
         {#            $identifiant = $_SESSION['identifiant'];#}

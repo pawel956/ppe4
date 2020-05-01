@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\PartialsRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +12,14 @@ class IndexController extends AbstractController
 {
     /**
      * @Route("/", name="index")
+     * @param PartialsRepository $partialsRepository
      * @param ProduitRepository $produitRepository
      * @return Response
      */
-    public function index(ProduitRepository $produitRepository)
+    public function index(PartialsRepository $partialsRepository, ProduitRepository $produitRepository)
     {
         return $this->render('index/index.html.twig', [
+            'partials' => $partialsRepository->getData(),
             'produits' => $produitRepository->findLastFourProducts()
         ]);
     }

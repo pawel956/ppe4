@@ -1,8 +1,9 @@
-{% extends 'base_default.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %} - Connexion{% endblock %}
+{% block title %}{{ parent() }} - Connexion{% endblock %}
 
-{% block core %}
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
     <br><br><br><br><br>
     <div class="container" style="position: relative;z-index:948;">
         <div class="row justify-content-center">

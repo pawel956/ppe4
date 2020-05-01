@@ -2,63 +2,46 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Image;
-use App\Entity\Marque;
 use App\Entity\Produit;
-use App\Entity\TypeImage;
-use App\Entity\TypeProduit;
-use App\Service\ImageService;
-use App\Service\MarqueService;
 use App\Service\ProduitService;
-use App\Service\TypeImageService;
-use App\Service\TypeProduitService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProduitFixtures extends Fixture
+class ProduitFixtures extends Fixture implements DependentFixtureInterface
 {
-    protected $typeProduitService;
-    protected $marqueService;
-    protected $typeImageService;
     protected $produitService;
-    protected $imageService;
 
-    public function __construct(TypeProduitService $typeProduitService, MarqueService $marqueService, TypeImageService $typeImageService, ProduitService $produitService, ImageService $imageService)
+    public function __construct(ProduitService $produitService)
     {
-        $this->typeProduitService = $typeProduitService;
-        $this->marqueService = $marqueService;
-        $this->typeImageService = $typeImageService;
         $this->produitService = $produitService;
-        $this->imageService = $imageService;
     }
 
     public function load(ObjectManager $entityManager)
     {
-        $TypeProduit = new TypeProduit();
-        $TypeProduit->setLibelle('Console');
-        $this->typeProduitService->save($TypeProduit);
+        $lesProduit = ['PS4'];
 
-        $Marque = new Marque();
-        $Marque->setLibelle('Sony');
-        $this->marqueService->save($Marque);
+        foreach ($lesProduit as $key => $unProduit) {
+            $produit = new Produit();
+            $produit->setIdTypeProduit($this->getReference('typeProduit'));
+            $produit->setIdMarque($this->getReference('marque'));
+            $produit->setLibelle($unProduit);
+            $produit->setDescription('La nouvelle console next-gen de Sony !');
+            $produit->setPrix('40');
+            $produit->setPrixTemporaire('30');
+            $this->produitService->save($produit);
 
-        $TypeImage = new TypeImage();
-        $TypeImage->setLibelle('png');
-        $this->typeImageService->save($TypeImage);
+            if ($key == 0) {
+                $this->addReference('produit', $produit);
+            }
+        }
+    }
 
-        $Produit = new Produit();
-        $Produit->setIdTypeProduit($TypeProduit);
-        $Produit->setIdMarque($Marque);
-        $Produit->setLibelle('PS4');
-        $Produit->setDescription('La nouvelle console next-gen de Sony !');
-        $Produit->setPrix('40');
-        $Produit->setPrixTemporaire('30');
-        $this->produitService->save($Produit);
-
-        $Image = new Image();
-        $Image->setIdTypeImage($TypeImage);
-        $Image->setIdProduit($Produit);
-        $Image->setLibelle('110');
-        $this->imageService->save($Image);
+    public function getDependencies()
+    {
+        return array(
+            TypeProduitFixtures::class,
+            MarqueFixtures::class,
+        );
     }
 }

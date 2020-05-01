@@ -1,8 +1,9 @@
-{% extends 'base_default_footer.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %} - Accueil{% endblock %}
+{% block title %}{{ parent() }} - Accueil{% endblock %}
 
-{% block core %}
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
     <br><br><br><br><br>
     <div class="content">
         <div style="text-align: center;"><h2>Nos derniers produits</h2></div>
@@ -42,4 +43,5 @@
             {% endfor %}
         </div>
     </div>
+    {% include "partials/footer.html.twig" %}
 {% endblock %}
