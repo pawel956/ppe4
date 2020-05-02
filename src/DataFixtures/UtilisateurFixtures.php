@@ -5,9 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Utilisateur;
 use App\Service\UtilisateurService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class UtilisateurFixtures extends Fixture
+class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
 {
     protected $utilisateurService;
 
@@ -18,15 +19,32 @@ class UtilisateurFixtures extends Fixture
 
     public function load(ObjectManager $entityManager)
     {
-        $Utilisateur = new Utilisateur();
-        $Utilisateur->setEmail('user@gmail.com');
-        $Utilisateur->setPlainPassword('toto');
-        $this->utilisateurService->save($Utilisateur);
+        $utilisateur = new Utilisateur();
+        $utilisateur->setNom('Martinez');
+        $utilisateur->setPrenom('Manuel');
+        $utilisateur->setEmail('user@gmail.com');
+        $utilisateur->setTelephone('0101010101');
+        $utilisateur->setDateNaissance(new \DateTime('1976-01-01'));
+        $utilisateur->setPlainPassword('toto');
+        $utilisateur->setIdGenre($this->getReference('genre'));
+        $this->utilisateurService->save($utilisateur);
 
-        $Utilisateur = new Utilisateur();
-        $Utilisateur->setEmail('admin@gmail.com');
-        $Utilisateur->setPlainPassword('toto');
-        $Utilisateur->setRoles(['ROLE_ADMIN']);
-        $this->utilisateurService->save($Utilisateur);
+        $utilisateur = new Utilisateur();
+        $utilisateur->setRoles(['ROLE_ADMIN']);
+        $utilisateur->setNom('Nadal');
+        $utilisateur->setPrenom('Cyrille');
+        $utilisateur->setEmail('admin@gmail.com');
+        $utilisateur->setTelephone('0202020202');
+        $utilisateur->setDateNaissance(new \DateTime('1976-01-02'));
+        $utilisateur->setPlainPassword('toto');
+        $utilisateur->setIdGenre($this->getReference('genre'));
+        $this->utilisateurService->save($utilisateur);
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            GenreFixtures::class
+        );
     }
 }

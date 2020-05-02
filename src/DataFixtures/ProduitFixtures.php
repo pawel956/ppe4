@@ -41,7 +41,7 @@ class ProduitFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             TypeProduitFixtures::class,
-            MarqueFixtures::class,
+            MarqueFixtures::class
         );
     }
 }

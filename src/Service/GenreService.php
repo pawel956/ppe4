@@ -2,44 +2,44 @@
 
 namespace App\Service;
 
-use App\Entity\Image;
+use App\Entity\Genre;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ImageService
+class GenreService
 {
     protected $em;
     protected $repository;
 
     /**
-     * ImageService constructor.
+     * GenreService constructor.
      *
      * @param EntityManagerInterface $em by dependency injection
      */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->repository = $this->em->getRepository(Image::class);
+        $this->repository = $this->em->getRepository(Genre::class);
     }
 
     /**
-     * Save a Image object in bdd
+     * Save a Genre object in bdd
      *
-     * @param Image $image
+     * @param Genre $genre
      */
-    public function save(Image $image)
+    public function save(Genre $genre)
     {
-        $this->em->persist($image);
+        $this->em->persist($genre);
         $this->em->flush();
     }
 
     /**
-     * Delete a Image object in bdd
+     * Delete a Genre object in bdd
      *
-     * @param Image $image
+     * @param Genre $genre
      */
-    public function delete(Image $image)
+    public function delete(Genre $genre)
     {
-        $this->em->remove($image);
+        $this->em->remove($genre);
         $this->em->flush();
     }
 }

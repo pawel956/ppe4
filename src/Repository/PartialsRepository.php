@@ -18,7 +18,8 @@ class PartialsRepository
     {
         return array(
             'marques' => $this->marqueRepository->findAll(),
-            'typeProduits' => $this->typeProduitRepository->findAll()
+            'typeProduits' => $this->typeProduitRepository->findAll(),
+            'year' => date('Y')
         );
     }
 

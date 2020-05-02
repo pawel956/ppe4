@@ -24,22 +24,22 @@ class ProduitService
     /**
      * Save a Produit object in bdd
      *
-     * @param Produit $Produit
+     * @param Produit $produit
      */
-    public function save(Produit $Produit)
+    public function save(Produit $produit)
     {
-        $this->em->persist($Produit);
+        $this->em->persist($produit);
         $this->em->flush();
     }
 
     /**
      * Delete a Produit object in bdd
      *
-     * @param Produit $Produit
+     * @param Produit $produit
      */
-    public function delete(Produit $Produit)
+    public function delete(Produit $produit)
     {
-        $this->em->remove($Produit);
+        $this->em->remove($produit);
         $this->em->flush();
     }
 }

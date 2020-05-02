@@ -24,22 +24,22 @@ class MarqueService
     /**
      * Save a Marque object in bdd
      *
-     * @param Marque $Marque
+     * @param Marque $marque
      */
-    public function save(Marque $Marque)
+    public function save(Marque $marque)
     {
-        $this->em->persist($Marque);
+        $this->em->persist($marque);
         $this->em->flush();
     }
 
     /**
      * Delete a Marque object in bdd
      *
-     * @param Marque $Marque
+     * @param Marque $marque
      */
-    public function delete(Marque $Marque)
+    public function delete(Marque $marque)
     {
-        $this->em->remove($Marque);
+        $this->em->remove($marque);
         $this->em->flush();
     }
 }

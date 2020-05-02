@@ -34,7 +34,7 @@ class ImageFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             TypeImageFixtures::class,
-            ProduitFixtures::class,
+            ProduitFixtures::class
         );
     }
 }

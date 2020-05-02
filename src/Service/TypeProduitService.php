@@ -24,22 +24,22 @@ class TypeProduitService
     /**
      * Save a TypeProduit object in bdd
      *
-     * @param TypeProduit $TypeProduit
+     * @param TypeProduit $typeProduit
      */
-    public function save(TypeProduit $TypeProduit)
+    public function save(TypeProduit $typeProduit)
     {
-        $this->em->persist($TypeProduit);
+        $this->em->persist($typeProduit);
         $this->em->flush();
     }
 
     /**
      * Delete a TypeProduit object in bdd
      *
-     * @param TypeProduit $TypeProduit
+     * @param TypeProduit $typeProduit
      */
-    public function delete(TypeProduit $TypeProduit)
+    public function delete(TypeProduit $typeProduit)
     {
-        $this->em->remove($TypeProduit);
+        $this->em->remove($typeProduit);
         $this->em->flush();
     }
 }

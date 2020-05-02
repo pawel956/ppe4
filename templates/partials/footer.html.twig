@@ -101,7 +101,7 @@
         </li>
     </ul>
     <div class="footer-copyright text-center py-3 hypertext">
-        &copy; <span id="year"></span> Copyright &nbsp;
+        &copy; {{ partials.year }} Copyright &nbsp;
         <a href="/PPE_Projet/equipe.php">Designed by Pawel</a>
     </div>
     {% if is_granted('ROLE_ADMIN') %}
@@ -111,9 +111,3 @@
         <br>
     {% endif %}
 </footer>
-
-<script>
-    $(document).ready(function () {
-        $("#year").html(new Date().getFullYear());
-    });
-</script>

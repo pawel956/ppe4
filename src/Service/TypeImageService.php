@@ -24,22 +24,22 @@ class TypeImageService
     /**
      * Save a TypeImage object in bdd
      *
-     * @param TypeImage $TypeImage
+     * @param TypeImage $typeImage
      */
-    public function save(TypeImage $TypeImage)
+    public function save(TypeImage $typeImage)
     {
-        $this->em->persist($TypeImage);
+        $this->em->persist($typeImage);
         $this->em->flush();
     }
 
     /**
      * Delete a TypeImage object in bdd
      *
-     * @param TypeImage $TypeImage
+     * @param TypeImage $typeImage
      */
-    public function delete(TypeImage $TypeImage)
+    public function delete(TypeImage $typeImage)
     {
-        $this->em->remove($TypeImage);
+        $this->em->remove($typeImage);
         $this->em->flush();
     }
 }

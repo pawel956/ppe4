@@ -29,32 +29,32 @@ class UtilisateurService
     /**
      * Set a password encoded to a user
      *
-     * @param Utilisateur $Utilisateur
+     * @param Utilisateur $utilisateur
      * @return Utilisateur
      */
-    protected function encodePassword(Utilisateur $Utilisateur)
+    protected function encodePassword(Utilisateur $utilisateur)
     {
-        $plainPassword = $Utilisateur->getPlainPassword();
+        $plainPassword = $utilisateur->getPlainPassword();
 
         if (!empty($plainPassword)) {
-            $Utilisateur->setPassword($this->passwordEncoder->encodePassword(
-                $Utilisateur,
+            $utilisateur->setPassword($this->passwordEncoder->encodePassword(
+                $utilisateur,
                 $plainPassword
             ));
         }
 
-        return $Utilisateur;
+        return $utilisateur;
     }
 
 
     /**
      * Delete a user object in bdd
      *
-     * @param Utilisateur $Utilisateur
+     * @param Utilisateur $utilisateur
      */
-    public function delete(Utilisateur $Utilisateur)
+    public function delete(Utilisateur $utilisateur)
     {
-        $this->em->remove($Utilisateur);
+        $this->em->remove($utilisateur);
         $this->em->flush();
     }
 
@@ -62,12 +62,12 @@ class UtilisateurService
     /**
      * Save a user object in bdd
      *
-     * @param Utilisateur $Utilisateur
+     * @param Utilisateur $utilisateur
      */
-    public function save(Utilisateur $Utilisateur)
+    public function save(Utilisateur $utilisateur)
     {
-        $Utilisateur = $this->encodePassword($Utilisateur);
-        $this->em->persist($Utilisateur);
+        $utilisateur = $this->encodePassword($utilisateur);
+        $this->em->persist($utilisateur);
         $this->em->flush();
     }
 }

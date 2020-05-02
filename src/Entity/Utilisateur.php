@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
+ * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec ce courriel.")
  */
 class Utilisateur implements UserInterface
 {
@@ -19,9 +21,9 @@ class Utilisateur implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean",  options={"default" : "0"})
      */
-    private $banni;
+    private $banni = '0';
 
     /**
      * @ORM\Column(type="json")
@@ -39,7 +41,7 @@ class Utilisateur implements UserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(name="courriel", type="string", length=180, unique=true)
      */
     private $email;
 
@@ -55,7 +57,7 @@ class Utilisateur implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="mot_de_passe", type="string")
      */
     private $password;
 
@@ -63,6 +65,18 @@ class Utilisateur implements UserInterface
      * @var string the clear password temporary
      */
     private $plainPassword;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Genre")
+     * @ORM\JoinColumn(name="id_genre", nullable=false)
+     */
+    private $id_genre;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Image")
+     * @ORM\JoinColumn(name="id_image")
+     */
+    private $id_image;
 
     public function getId(): ?int
     {
@@ -163,7 +177,7 @@ class Utilisateur implements UserInterface
         return $this->date_naissance;
     }
 
-    public function setDateNaissance(\DateTimeInterface $date_naissance): self
+    public function setDateNaissance($date_naissance): self
     {
         $this->date_naissance = $date_naissance;
 
@@ -199,6 +213,30 @@ class Utilisateur implements UserInterface
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function getIdGenre(): ?Genre
+    {
+        return $this->id_genre;
+    }
+
+    public function setIdGenre(?Genre $id_genre): self
+    {
+        $this->id_genre = $id_genre;
+
+        return $this;
+    }
+
+    public function getIdImage(): ?Image
+    {
+        return $this->id_image;
+    }
+
+    public function setIdImage(?Image $id_image): self
+    {
+        $this->id_image = $id_image;
+
+        return $this;
     }
 
     /**
