@@ -70,4 +70,16 @@ class UtilisateurService
         $this->em->persist($utilisateur);
         $this->em->flush();
     }
+
+
+    /**
+     * @param $email
+     * @return bool
+     */
+    public function checkEmail($email)
+    {
+        $unUtilisateur = $this->em->getRepository(Utilisateur::class)->findOneBy(['email' => $email]);
+
+        return $unUtilisateur == null;
+    }
 }

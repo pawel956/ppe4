@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="App\Repository\UtilisateurRepository")
- * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec ce courriel.")
+ * @UniqueEntity(fields={"email"}, message="Un compte existe déjà avec ce courriel")
  */
 class Utilisateur implements UserInterface
 {
@@ -74,7 +74,7 @@ class Utilisateur implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Image")
-     * @ORM\JoinColumn(name="id_image")
+     * @ORM\JoinColumn(name="id_image", onDelete="CASCADE")
      */
     private $id_image;
 

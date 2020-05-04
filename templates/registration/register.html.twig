@@ -5,6 +5,12 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+
+    <style>
+        .custom-file-input ~ .custom-file-label:lang(fr)::after {
+            content: "Parcourir";
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -18,7 +24,7 @@
                         <h4 class="card-title mt-2 text-center">Inscription</h4>
                     </header>
                     <article class="card-body">
-                        {{ form_start(registrationForm,  {'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+                        {{ form_start(registrationForm,  {'attr': {'novalidate': 'novalidate'}}) }}
 
                         <div class="form-row">
                             <div class="col form-group">
@@ -61,18 +67,30 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="custom-file">
+                                {{ form_row(registrationForm.idImage) }}
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="form-group">
                             <div class="custom-control custom-checkbox">
                                 {{ form_row(registrationForm.agreeTerms) }}
                             </div>
                         </div>
 
-                        {{ form_rest(registrationForm) }}
+                        <br>
+
+                        {{ form_widget(registrationForm.recaptcha) }}
 
                         <div class="form-group">
                             <div class="col-md-4 offset-md-4">
-                                {{ form_label(registrationForm.submit) }}
+                                {{ form_widget(registrationForm.submit) }}
                             </div>
                         </div>
+
+                        {{ form_rest(registrationForm) }}
 
                         {{ form_end(registrationForm) }}
                     </article>
@@ -97,6 +115,45 @@
                 orientation: "bottom auto",
                 autoclose: true,
                 todayHighlight: true
+            });
+
+            $(document).on('change', '.custom-file-input', function () {
+                let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+                $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
+            });
+
+            $('#registration_form_email').on('keyup', function (e) {
+                let input = $(this);
+                let email = input.val();
+                let label = $('label[for="registration_form_email"]');
+
+                if (email.length > 0) {
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{ path('check_email') }}',
+                        data: {email: email},
+                        success: function (data) {
+                            if (data.success === false) {
+                                label.html('Courriel <span class="invalid-feedback d-block"><span class="d-block">\n' +
+                                    '                    <span class="form-error-icon badge badge-danger text-uppercase">Error</span> <span class="form-error-message">Un compte existe déjà avec ce courriel</span>\n' +
+                                    '                </span></span>')
+                                if (!input.hasClass('is-invalid')) {
+                                    input.addClass('is-invalid');
+                                }
+                            } else {
+                                label.html('Courriel');
+                                if (input.hasClass('is-invalid')) {
+                                    input.removeClass('is-invalid');
+                                }
+                            }
+                        }
+                    })
+                } else {
+                    label.html('Courriel');
+                    if (input.hasClass('is-invalid')) {
+                        input.removeClass('is-invalid');
+                    }
+                }
             });
         });
     </script>

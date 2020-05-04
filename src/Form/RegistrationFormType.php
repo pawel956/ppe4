@@ -4,11 +4,14 @@ namespace App\Form;
 
 use App\Entity\Genre;
 use App\Entity\Utilisateur;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,9 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
@@ -136,6 +139,24 @@ class RegistrationFormType extends AbstractType
                     ])
                 ]
             ])
+            ->add('idImage', FileType::class, [
+                'label' => 'Choisir une photo de profil (facultatif)',
+                'mapped' => false,
+                'attr' => [
+                    'accept' => '.jpg,.jpeg,.png',
+                    'lang' => 'fr'
+                ],
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png'
+                        ],
+                        'mimeTypesMessage' => 'Veuillez sélectionner une image .jpg, .jpeg, ou .png'
+                    ])
+                ]
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'En créant un compte, vous acceptez les Conditions générales de vente de Game Market. 
                 Veuillez consulter notre Notice Protection de vos Informations Personnelles, notre Notice Cookies 
@@ -144,13 +165,24 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'custom-control-input'
                 ],
+                'label_attr' => [
+                    'class' => 'custom-control-label'
+                ],
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez accepter les conditions générales.'
                     ])
-                ],
-                'label_attr' => [
-                    'class' => 'custom-control-label'
+                ]
+            ])
+            ->add('recaptcha', EWZRecaptchaType::class, [
+                'mapped' => false,
+                'language' => 'fr',
+                'attr' => [
+                    'options' => [
+                        'theme' => 'light',
+                        'type' => 'image',
+                        'size' => 'invisible'
+                    ]
                 ]
             ])
             ->add('submit', SubmitType::class, [
