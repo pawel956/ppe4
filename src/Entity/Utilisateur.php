@@ -21,9 +21,9 @@ class Utilisateur implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="boolean",  options={"default" : "0"})
+     * @ORM\Column(type="boolean",  options={"default" : "1"})
      */
-    private $banni = '0';
+    private $actif = '1';
 
     /**
      * @ORM\Column(type="json")
@@ -78,19 +78,29 @@ class Utilisateur implements UserInterface
      */
     private $id_image;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $token;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_derniere_connexion;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBanni(): ?bool
+    public function getActif(): ?bool
     {
-        return $this->banni;
+        return $this->actif;
     }
 
-    public function setBanni(bool $banni): self
+    public function setActif(bool $actif): self
     {
-        $this->banni = $banni;
+        $this->actif = $actif;
 
         return $this;
     }
@@ -239,6 +249,18 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -254,5 +276,17 @@ class Utilisateur implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getDateDerniereConnexion(): ?\DateTimeInterface
+    {
+        return $this->date_derniere_connexion;
+    }
+
+    public function setDateDerniereConnexion(?\DateTimeInterface $date_derniere_connexion): self
+    {
+        $this->date_derniere_connexion = $date_derniere_connexion;
+
+        return $this;
     }
 }

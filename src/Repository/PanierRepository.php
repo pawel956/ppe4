@@ -19,6 +19,35 @@ class PanierRepository extends ServiceEntityRepository
         parent::__construct($registry, Panier::class);
     }
 
+    /**
+     * @param int $idCommande
+     * @return int|mixed|string
+     */
+    public function numberProducts(int $idCommande)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('SUM(p.quantite) AS quantite')
+            ->where('p.idCommande = :idCommande')
+            ->setParameter('idCommande', $idCommande)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param int $idCommande
+     * @return int|mixed|string
+     */
+    public function contenuPanier(int $idCommande)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->join('p.idProduit', 'pr')
+            ->where('p.idCommande = :idCommande')
+            ->setParameter('idCommande', $idCommande)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Panier[] Returns an array of Panier objects
     //  */

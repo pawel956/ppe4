@@ -21,20 +21,36 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Produit[] Returns an array of Produit objects
+     * @return Produit[]
      */
     public function findLastFourProducts()
     {
-        return $this->getEntityManager()
-            ->getRepository(Image::class)
-            ->createQueryBuilder('i')
-            ->select('i')
-            ->join('i.idProduit', 'p')
-            ->where('i.idProduit IS NOT NULL')
+        /** @var Produit[] $produits */
+        $produits = $this->createQueryBuilder('p')
             ->orderBy('p.id', 'DESC')
             ->setMaxResults(4)
             ->getQuery()
             ->getResult();
+
+        $images = null;
+
+        if (!is_null($produits)) {
+            foreach ($produits as $produit) {
+                $idProduit = $produit->getId();
+                $images[$idProduit] = $this->getEntityManager()
+                    ->getRepository(Image::class)
+                    ->createQueryBuilder('i')
+                    ->where('i.idProduit = :idProduit')
+                    ->setParameter('idProduit', $idProduit)
+                    ->getQuery()
+                    ->getResult();
+            }
+        }
+
+        return [
+            'produits' => $produits,
+            'images' => $images
+        ];
     }
 
     // /**

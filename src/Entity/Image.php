@@ -51,7 +51,7 @@ class Image
     /**
      * @var \TypeImage
      *
-     * @ORM\ManyToOne(targetEntity="TypeImage")
+     * @ORM\ManyToOne(targetEntity="TypeImage", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_type_image", referencedColumnName="id")
      * })

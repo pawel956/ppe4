@@ -2,6 +2,11 @@
 
 {% block title %} - Connexion{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+{% endblock %}
+
 {% block body %}
     {% include "partials/navbar.html.twig" %}
     <br><br><br><br><br>
@@ -34,7 +39,8 @@
 
                             <div class="form-group">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="remember_me" name="_remember_me" />
+                                    <input type="checkbox" class="custom-control-input" id="remember_me"
+                                           name="_remember_me"/>
                                     <label class="custom-control-label" for="remember_me">Se souvenir de moi</label>
                                 </div>
                             </div>
@@ -50,4 +56,24 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            toastr.options.progressBar = true;
+            {% for flashMessage in app.session.flashbag.get('success') %}
+            toastr.success('{{ flashMessage|raw }}');
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('info') %}
+            toastr.info('{{ flashMessage|raw }}');
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+            toastr.error('{{ flashMessage|raw }}');
+            {% endfor %}
+        });
+    </script>
 {% endblock %}

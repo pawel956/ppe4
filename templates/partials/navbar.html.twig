@@ -37,17 +37,7 @@
         </a>
         {% if is_granted('ROLE_USER') %}
             <div class="contenu_panier_mobile">
-                {#            <?php#}
-                {#                $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
-                {#                $res = $pdo->query($req);#}
-                {#            $row = $res->fetchAll();#}
-                {#            if (($row[0][0]) == 0) {#}
-                {#            echo "0";#}
-                {#            } else {#}
-                {#            echo $row[0][0];#}
-                {#            }#}
-                {#            }#}
-                {#            ?>#}
+                {{ partials.panier.quantite }}
             </div>
         {% endif %}
     </button>
@@ -103,82 +93,56 @@
             </div>
         </div>
 
-        {% if not is_granted('ROLE_USER') %}
+        {% if is_granted('ROLE_USER') %}
+        <div class="collapse navbar-collapse" id="shop">
+            <div class="dropdown dropleft">
+                <a class="nav-link hypertext" href="/PPE_Projet/compte/panier.php" class="dropdown-toggle"
+                   data-toggle="dropdown"><i class="fas fa-shopping-cart"></i></a>
+                {% if (partials.panier.quantite > 0) %}
+                    <ul class="dropdown-menu dropdown-cart" role="menu">
+                        {% for panier in partials.panier.contenu %}
+                            <li>
+                                            <span class="item">
+                                                <span class="item-left padding_recap">
+{#                                                    <img class="resize_navbar" src="<?php echo $row['image']; ?>"#}
+                                                    {#                                                         alt=""/>#}
+                                                    <span class="item-info">
+                                                        <span class="uppercase">
+                                                            {{ panier.idProduit.libelle }}
+                                                            {% if panier.quantite > 1 %}
+                                                                (&times;{{ panier.quantite }})
+                                                            {% endif %}
+                                                            </span>
+                                                        <span>{{ panier.prix * panier.quantite }}&euro;</span>
+                                                    </span>
+                                                </span>
+                                                <span class="item-right">
+                                                    <a href="/PPE_Projet/scripts/traitement_supprimer_produit?identifiant_produit=<?php echo $row['identifiant']; ?>"
+                                                       class="btn btn-xs btn-danger pull-right">&times;</a>
+                                                </span>
+                                            </span>
+                            </li>
+                        {% endfor %}
+                        <br>
+                        <center>
+                            <a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>
+                        </center>
+                    </ul>
+                {% endif %}
+            </div>
+            {% else %}
             <div class="collapse navbar-collapse" id="shop">
                 <a class="nav-link hypertext" href="{{ path('app_login') }}">
                     <i class="fas fa-shopping-cart"></i>
                 </a>
+                {% endif %}
+                {% if is_granted('ROLE_USER') %}
+                    <div class="contenu_panier">
+                        {{ partials.panier.quantite }}
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
-        {#        <?php#}
-        {#        if (isset($_SESSION['identifiant'])) { // Si on ne détecte pas de session alors on verra les liens ci-dessous#}
-        {#            $identifiant = $_SESSION['identifiant'];#}
-        {#            $req = "SELECT * FROM panier, utilisateurs, produits WHERE panier.identifiant=utilisateurs.identifiant AND panier.reference=produits.identifiant AND panier.identifiant='$identifiant'";#}
-        {#            $res = $pdo->query($req);#}
-        {#        ?>#}
-        {#        <div class="collapse navbar-collapse" id="shop">#}
-        {#            <div class="dropdown dropleft">#}
-        {#                <a class="nav-link hypertext" href="/PPE_Projet/compte/panier.php" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-shopping-cart" ></i></a>#}
-        {#                <?php#}
-        {#                    $compteur = $res->fetchAll();#}
-        {#                if (count($compteur) > 0) {#}
-        {#                ?>#}
-        {#                <ul class="dropdown-menu dropdown-cart" role="menu">#}
-        {#                    <?php#}
-        {#                            $req = "SELECT * FROM panier, utilisateurs, produits WHERE panier.identifiant=utilisateurs.identifiant AND panier.reference=produits.identifiant AND panier.identifiant='$identifiant'";#}
-        {#                            $res = $pdo->query($req);#}
-        {#                    while ($row = $res->fetch()) {#}
-        {#                    ?>#}
-        {#                    <li>#}
-        {#                                    <span class="item">#}
-        {#                                        <span class="item-left padding_recap">#}
-        {#                                            <img class="resize_navbar" src="<?php echo $row['image']; ?>" alt="" />#}
-        {#                                            <span class="item-info">#}
-        {#                                                <span class="uppercase"><?php echo $row['plateforme']; ?> x <?php echo $row['qte']; ?> </span>#}
-        {#                                                <span><?php echo $row['prix']; ?> &euro; / unité </span>#}
-        {#                                            </span>#}
-        {#                                        </span>#}
-        {#                                        <span class="item-right">#}
-        {#                                            <a href="/PPE_Projet/scripts/traitement_supprimer_produit?identifiant_produit=<?php echo $row['identifiant']; ?>" class="btn btn-xs btn-danger pull-right">x</a>#}
-        {#                                        </span>#}
-        {#                                    </span>#}
-        {#                    </li>#}
-        {#                    <?php#}
-        {#                            }#}
-        {#                            ?>#}
-        {#                    <br />#}
-        {#                    <center><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a></li></center>#}
-        {#                </ul>#}
-        {#                <?php#}
-        {#                    }#}
-        {#                    ?>#}
-        {#            </div>#}
-        {#            <?php#}
-        {#            } else {#}
-        {#                ?>#}
-        {#            <div class="collapse navbar-collapse" id="shop">#}
-        {#                <a class="nav-link hypertext" href="/PPE_Projet/compte/connexion.php"><i class="fas fa-shopping-cart"></i></a>#}
-        {#                <?php#}
-        {#                }#}
-        {#                ?>#}
-        {#                <?php#}
-        {#                if (isset($_SESSION['identifiant'])) {#}
-        {#                    ?>#}
-        {#                <div class = "contenu_panier">#}
-        {#                    <?php#}
-        {#                        $req = "SELECT SUM(qte) FROM panier WHERE identifiant='$identifiant'";#}
-        {#                        $res = $pdo->query($req);#}
-        {#                    $row = $res->fetchAll();#}
-        {#                    if (($row[0][0]) == 0) {#}
-        {#                    echo "0";#}
-        {#                    } else {#}
-        {#                    echo $row[0][0];#}
-        {#                    }#}
-        {#                    }#}
-        {#                    ?>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
+        </div>
     </div>
 </nav>
 

@@ -52,7 +52,7 @@ class Produit
     /**
      * @var \TypeProduit
      *
-     * @ORM\ManyToOne(targetEntity="TypeProduit")
+     * @ORM\ManyToOne(targetEntity="TypeProduit", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_type_produit", referencedColumnName="id")
      * })
@@ -62,7 +62,7 @@ class Produit
     /**
      * @var \Marque
      *
-     * @ORM\ManyToOne(targetEntity="Marque")
+     * @ORM\ManyToOne(targetEntity="Marque", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_marque", referencedColumnName="id")
      * })

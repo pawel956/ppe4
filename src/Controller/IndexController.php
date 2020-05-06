@@ -18,9 +18,12 @@ class IndexController extends AbstractController
      */
     public function index(PartialsRepository $partialsRepository, ProduitRepository $produitRepository)
     {
+        $data = $produitRepository->findLastFourProducts();
+
         return $this->render('index/index.html.twig', [
             'partials' => $partialsRepository->getData(),
-            'produits' => $produitRepository->findLastFourProducts()
+            'produits' => $data['produits'],
+            'images' => $data['images']
         ]);
     }
 }

@@ -1,0 +1,93 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ produit.libelle }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        <div class="card">
+            <div class="row no-gutters">
+                <aside class="col-sm-5 border-right">
+                    <br><br><br><br>
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            {% for i in 0..images|length - 1 %}
+                                <li data-target="#carouselExampleIndicators"
+                                    data-slide-to="{{ i }}" {{ loop.first ? 'class="active"' : '' }}></li>
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+                            {% for image in images %}
+                                <div class="carousel-item {{ loop.first ? 'active' : '' }}">
+                                    <img class="w-100 resize_produit"
+                                         src="{{ asset(produitPicturesDirectory ~ image.libelle ~ '.' ~ image.idTypeImage.libelle) }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                           data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                           data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </aside>
+                <aside class="col-sm-7">
+                    <article class="p-5">
+                        <h3 class="title mb-3">{{ produit.libelle }}</h3>
+                        <div class="mb-3">
+                            <var class="price h3 text-warning">
+                                            <span class="num">
+                                                {% if produit.prixTemporaire is empty %}
+                                                    {{ produit.prix }} &euro;
+                                                {% else %}
+                                                    <s>{{ produit.prix }} &euro;</s>
+                                                    {{ produit.prixTemporaire }} &euro;
+                                                {% endif %}
+                                            </span>
+                            </var>
+                        </div>
+                        <dl>
+                            <dt>Description</dt>
+                            <dd><p>{{ produit.description }}</p></dd>
+                        </dl>
+                        <dl>
+                            <dt>Marque</dt>
+                            <dd>{{ produit.idMarque.libelle }}</dd>
+                        </dl>
+                        <br>
+                        <hr>
+                        {% if not is_granted('ROLE_USER') %}
+                            <div style="text-align: center;">
+                                <a class="btn btn-success" href="{{ path('app_login') }}">Ajouter au panier</a>
+                            </div>
+                        {% else %}
+                            <div style="text-align: center;">
+                                <a class="btn btn-success ajout_panier" href="#" idProduit="{{ produit.id }}" libelle="{{ produit.libelle }}">Ajouter
+                                    au panier</a>
+                            </div>
+                        {% endif %}
+                    </article>
+                </aside>
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+
+    {% include "partials/ajout_panier.html.twig" %}
+{% endblock %}
