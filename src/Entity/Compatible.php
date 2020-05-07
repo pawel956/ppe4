@@ -31,7 +31,7 @@ class Compatible
     /**
      * @var \Produit
      *
-     * @ORM\ManyToOne(targetEntity="Produit")
+     * @ORM\ManyToOne(targetEntity="Produit", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_produit", referencedColumnName="id")
      * })
@@ -41,7 +41,7 @@ class Compatible
     /**
      * @var \Plateforme
      *
-     * @ORM\ManyToOne(targetEntity="Plateforme")
+     * @ORM\ManyToOne(targetEntity="Plateforme", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_plateforme", referencedColumnName="id")
      * })

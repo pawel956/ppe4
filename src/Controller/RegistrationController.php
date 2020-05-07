@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Constants;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
-use App\Repository\PartialsRepository;
 use App\Service\ImageService;
+use App\Service\PartialsService;
 use App\Service\UtilisateurService;
 use Swift_Mailer;
 use Swift_Message;
@@ -23,10 +23,10 @@ class RegistrationController extends AbstractController
      * @param ImageService $imageService
      * @param UtilisateurService $utilisateurService
      * @param Swift_Mailer $mailer
-     * @param PartialsRepository $partialsRepository
+     * @param PartialsService $partialsService
      * @return Response
      */
-    public function register(Request $request, ImageService $imageService, UtilisateurService $utilisateurService, Swift_Mailer $mailer, PartialsRepository $partialsRepository): Response
+    public function register(Request $request, ImageService $imageService, UtilisateurService $utilisateurService, Swift_Mailer $mailer, PartialsService $partialsService): Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'partials' => $partialsRepository->getData()
+            'partials' => $partialsService->getData()
         ]);
     }
 

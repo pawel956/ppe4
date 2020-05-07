@@ -116,16 +116,47 @@ class PanierService
     }
 
     /**
+     * @param int $idProduit
      * @param int $idUtilisateur
+     * @return bool
+     */
+    public function removeProduct(int $idProduit, int $idUtilisateur)
+    {
+        /** @var Produit $produit */
+        $produit = $this->em->getRepository(Produit::class)->findOneBy(['id' => $idProduit]);
+
+        $utilisateur = $this->getUtilisateur($idUtilisateur);
+
+        if (is_null($produit) || is_null($utilisateur)) {
+            return false;
+        }
+
+        $commande = $this->getCommande($utilisateur);
+
+        /** @var Panier $panier */
+        $panier = $this->em->getRepository(Panier::class)->findOneBy(['idProduit' => $produit, 'idCommande' => $commande]);
+
+        if (is_null($panier)) {
+            return false;
+        }
+
+        $this->delete($panier);
+
+        return true;
+    }
+
+    /**
+     * @param int $idUtilisateur
+     * @param bool $array
      * @return array
      */
-    public function panierData(int $idUtilisateur)
+    public function panierData(int $idUtilisateur, bool $array = false)
     {
         $commandeId = $this->getCommande($this->getUtilisateur($idUtilisateur))->getId();
         $panierRepository = $this->em->getRepository(Panier::class);
 
         $data = [
-            'contenu' => $panierRepository->contenuPanier($commandeId),
+            'contenu' => $panierRepository->contenuPanier($commandeId, $array),
             'quantite' => $panierRepository->numberProducts($commandeId)[0]['quantite']
         ];
 

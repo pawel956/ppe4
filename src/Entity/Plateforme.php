@@ -31,7 +31,7 @@ class Plateforme
     /**
      * @var \Marque
      *
-     * @ORM\ManyToOne(targetEntity="Marque")
+     * @ORM\ManyToOne(targetEntity="Marque", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_marque", referencedColumnName="id")
      * })

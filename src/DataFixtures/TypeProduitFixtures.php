@@ -25,8 +25,8 @@ class TypeProduitFixtures extends Fixture
             $typeProduit->setLibelle($unTypeProduit);
             $this->typeProduitService->save($typeProduit);
 
-            if ($key == 1) {
-                $this->addReference('typeProduit', $typeProduit);
+            if ($key == 0 || $key == 1) {
+                $this->addReference('typeProduit' . $typeProduit->getLibelle(), $typeProduit);
             }
         }
     }

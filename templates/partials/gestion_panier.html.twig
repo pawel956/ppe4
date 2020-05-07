@@ -1,0 +1,117 @@
+<script>
+    $(document).ready(function () {
+        toastr.options.progressBar = true;
+
+        $(document).on('click', '.ajout_panier', function (e) {
+            let idProduit = $(this).attr("idProduit");
+            let libelle = $(this).attr("libelle");
+
+            $.ajax({
+                method: 'POST',
+                url: '{{ path('add_panier') }}',
+                data: {idProduit: idProduit},
+                success: function (data) {
+                    if (data.success === true) {
+                        toastr.success('Vous avez ajouté ' + libelle + ' au panier !');
+
+                        qte_panier = data.panier.quantite;
+
+                        $('.contenu_panier').html(qte_panier);
+                        $('.contenu_panier_mobile').html(qte_panier);
+
+                        let contenu_panier = $('ul.dropdown-menu.dropdown-cart.text-center');
+                        let data_panier = '';
+
+                        if (!contenu_panier.length) {
+                            data_panier += '<ul class="dropdown-menu dropdown-cart text-center" style="width: 400px;" role="menu">';
+                        }
+
+                        data.panier.contenu.forEach(produit => {
+                            qte = produit.quantite > 1 ? ' (×' + produit.quantite + ')' : '';
+                            data_panier += '<li>' +
+                                '<span class="item">' +
+                                '<span class="item-left padding_recap">' +
+                                '<span class="item-info">' +
+                                produit.idProduit.libelle +
+                                qte +
+                                ' - ' + Math.round(produit.prix * produit.quantite * 100) / 100 + '&euro;' +
+                                '</span>' +
+                                '</span>' +
+                                '<span class="item-right">' +
+                                '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" libelle="' + produit.idProduit.libelle + '">&times;</a>' +
+                                '</span>' +
+                                '</span>' +
+                                '</li>';
+                        });
+
+                        data_panier += '<br><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>';
+
+                        if (!contenu_panier.length) {
+                            data_panier += '</ul>';
+
+                            let menuPanier = $('#menuPanier');
+                            menuPanier.html(menuPanier.html() + data_panier);
+                        } else {
+                            contenu_panier.html(data_panier);
+                        }
+                    } else {
+                        toastr.error('Erreur lors de l\'ajout ' + libelle + ' au panier !');
+                    }
+                }
+            })
+            return false;
+        });
+
+        $(document).on('click', '.supprimer_panier', function (e) {
+            let idProduit = $(this).attr("idProduit");
+            let libelle = $(this).attr("libelle");
+
+            $.ajax({
+                method: 'POST',
+                url: '{{ path('remove_panier') }}',
+                data: {idProduit: idProduit},
+                success: function (data) {
+                    if (data.success === true) {
+                        toastr.success('Vous avez supprimé ' + libelle + ' du panier !');
+
+                        qte_panier = data.panier.quantite;
+
+                        $('.contenu_panier').html(qte_panier);
+                        $('.contenu_panier_mobile').html(qte_panier);
+
+                        let contenu_panier = $('ul.dropdown-menu.dropdown-cart.text-center');
+                        let data_panier = '';
+
+                        if (data.panier.quantite == 0) {
+                            contenu_panier.remove();
+                        } else {
+                            data.panier.contenu.forEach(produit => {
+                                qte = produit.quantite > 1 ? ' (×' + produit.quantite + ')\n' : '';
+                                data_panier += '<li>' +
+                                    '<span class="item">' +
+                                    '<span class="item-left padding_recap">' +
+                                    '<span class="item-info">' +
+                                    produit.idProduit.libelle +
+                                    qte +
+                                    ' - ' + Math.round(produit.prix * produit.quantite * 100) / 100 + '&euro;' +
+                                    '</span>' +
+                                    '</span>' +
+                                    '<span class="item-right">' +
+                                    '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" libelle="' + produit.idProduit.libelle + '">&times;</a>' +
+                                    '</span>' +
+                                    '</span>' +
+                                    '</li>';
+                            });
+
+                            data_panier += '<br><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>';
+                            contenu_panier.html(data_panier);
+                        }
+                    } else {
+                        toastr.error('Erreur lors de la suppression de ' + libelle + ' du panier !');
+                    }
+                }
+            })
+            return false;
+        });
+    });
+</script>

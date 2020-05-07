@@ -22,6 +22,13 @@ class Marque
     private $id;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="constructeur", type="boolean", nullable=false,  options={"default" : "0"})
+     */
+    private $constructeur = '0';
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="libelle", type="string", length=255, nullable=true)
@@ -31,6 +38,18 @@ class Marque
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getConstructeur(): ?bool
+    {
+        return $this->constructeur;
+    }
+
+    public function setConstructeur(bool $constructeur): self
+    {
+        $this->constructeur = $constructeur;
+
+        return $this;
     }
 
     public function getLibelle(): ?string

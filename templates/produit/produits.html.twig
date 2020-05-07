@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ plateforme.libelle }}{{ typeProduit is defined ? ' & ' ~ typeProduit.libelle : '' }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        {% if produits|length > 0 %}
+            <br>
+            <div class="row text-center">
+                {% for produit in produits %}
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="card">
+                            <div class="parent">
+                                <img class="card-img-top padding resize"
+                                     src="{{ asset(produitPicturesDirectory ~ images[produit.idProduit.id][0].libelle ~ '.' ~ images[produit.idProduit.id][0].idTypeImage.libelle) }}">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ produit.idProduit.libelle }}</h5>
+                                <h5>
+                                    {% if produit.idProduit.prixTemporaire is empty %}
+                                        {{ produit.idProduit.prix }} &euro;
+                                    {% else %}
+                                        <s>{{ produit.idProduit.prix }} &euro;</s>
+                                        {{ produit.idProduit.prixTemporaire }} &euro;
+                                    {% endif %}
+                                </h5>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row justify-content-center">
+                                    <form action="{{ path('produit') }}" method="post">
+                                        <input type="hidden" name="idProduit" value="{{ produit.idProduit.id }}">
+                                        <input type="submit" class="btn btn-primary btn-sm" value="Détails">
+                                    </form>
+                                    &nbsp;
+                                    {% if not is_granted('ROLE_USER') %}
+                                        <a class="btn btn-success btn-sm" href="{{ path('app_login') }}">Ajouter au
+                                            panier</a>
+                                    {% else %}
+                                        <a class="btn btn-success btn-sm ajout_panier" href="#"
+                                           idProduit="{{ produit.idProduit.id }}"
+                                           libelle="{{ produit.idProduit.libelle }}">Ajouter
+                                            au panier</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align: center;">
+                <h2>Désolé, nous n'avons pas de produits correspondant a vos critères</h2>
+            </div>
+        {% endif %}
+    </div>
+    {% include "partials/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+
+    {% include "partials/gestion_panier.html.twig" %}
+{% endblock %}

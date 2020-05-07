@@ -8,6 +8,7 @@
         "ext-json": "*",
         "cocur/slugify": "^4.0",
         "excelwebzone/recaptcha-bundle": "^1.5",
+        "knplabs/knp-paginator-bundle": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.0.*",

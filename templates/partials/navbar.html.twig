@@ -44,17 +44,20 @@
 
     <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav">
-            {% for marque in partials.marques %}
+            {% for plateforme in partials.plateformes %}
                 <li class="nav-item dropdown">
                     <div class="nav2">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            {{ marque.libelle|upper }}
+                            {{ plateforme.libelle|upper }}
                         </a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu" style="text-align: center">
                             {% for typeProduit in partials.typeProduits %}
-                                {% if marque.libelle != 'Steam' or typeProduit.libelle != 'Consoles' %}
-                                    <a class="dropdown-item"
-                                       href="/PPE_Projet/produits.php?plateforme=ps4&categorie=jeux">{{ typeProduit.libelle }}</a>
+                                {% if plateforme.libelle != 'PC' or typeProduit.libelle != 'Consoles' %}
+                                    <form action="{{ path('produits') }}" method="post">
+                                        <input type="hidden" name="idPlateforme" value="{{ plateforme.id }}">
+                                        <input type="hidden" name="idTypeProduit" value="{{ typeProduit.id }}">
+                                        <input type="submit" class="dropdown-item" value="{{ typeProduit.libelle }}">
+                                    </form>
                                 {% endif %}
                             {% endfor %}
                         </div>
@@ -95,11 +98,10 @@
 
         {% if is_granted('ROLE_USER') %}
         <div class="collapse navbar-collapse" id="shop">
-            <div class="dropdown dropleft">
-                <a class="nav-link hypertext" href="/PPE_Projet/compte/panier.php" class="dropdown-toggle"
-                   data-toggle="dropdown"><i class="fas fa-shopping-cart"></i></a>
+            <div class="dropdown dropleft" id="menuPanier">
+                <a class="nav-link hypertext" href="#" data-toggle="dropdown"><i class="fas fa-shopping-cart"></i></a>
                 {% if (partials.panier.quantite > 0) %}
-                    <ul class="dropdown-menu dropdown-cart" role="menu">
+                    <ul class="dropdown-menu dropdown-cart text-center" style="width: 400px;" role="menu">
                         {% for panier in partials.panier.contenu %}
                             <li>
                                             <span class="item">
@@ -107,26 +109,24 @@
 {#                                                    <img class="resize_navbar" src="<?php echo $row['image']; ?>"#}
                                                     {#                                                         alt=""/>#}
                                                     <span class="item-info">
-                                                        <span class="uppercase">
                                                             {{ panier.idProduit.libelle }}
-                                                            {% if panier.quantite > 1 %}
-                                                                (&times;{{ panier.quantite }})
-                                                            {% endif %}
-                                                            </span>
-                                                        <span>{{ panier.prix * panier.quantite }}&euro;</span>
+                                                        {% if panier.quantite > 1 %}
+                                                            (&times;{{ panier.quantite }})
+                                                        {% endif %}
+                                                           - {{ panier.prix * panier.quantite }}&euro;
                                                     </span>
                                                 </span>
                                                 <span class="item-right">
-                                                    <a href="/PPE_Projet/scripts/traitement_supprimer_produit?identifiant_produit=<?php echo $row['identifiant']; ?>"
-                                                       class="btn btn-xs btn-danger pull-right">&times;</a>
+                                                    <a href="#"
+                                                       class="btn btn-xs btn-danger pull-right supprimer_panier"
+                                                       idProduit="{{ panier.idProduit.id }}"
+                                                       libelle="{{ panier.idProduit.libelle }}">&times;</a>
                                                 </span>
                                             </span>
                             </li>
                         {% endfor %}
                         <br>
-                        <center>
-                            <a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>
-                        </center>
+                        <a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>
                     </ul>
                 {% endif %}
             </div>

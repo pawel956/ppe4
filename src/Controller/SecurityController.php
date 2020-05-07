@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\PartialsRepository;
+use App\Service\PartialsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,10 +13,10 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
-     * @param PartialsRepository $partialsRepository
+     * @param PartialsService $partialsService
      * @return Response
      */
-    public function login(AuthenticationUtils $authenticationUtils, PartialsRepository $partialsRepository): Response
+    public function login(AuthenticationUtils $authenticationUtils, PartialsService $partialsService): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('index');
@@ -30,7 +30,7 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-            'partials' => $partialsRepository->getData()
+            'partials' => $partialsService->getData()
         ]);
     }
 

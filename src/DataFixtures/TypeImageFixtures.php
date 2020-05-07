@@ -18,16 +18,14 @@ class TypeImageFixtures extends Fixture
 
     public function load(ObjectManager $entityManager)
     {
-        $lesTypeImage = ['png'];
+        $lesTypeImage = ['png', 'jpg'];
 
         foreach ($lesTypeImage as $key => $unTypeImage) {
             $typeImage = new TypeImage();
             $typeImage->setLibelle($unTypeImage);
             $this->typeImageService->save($typeImage);
 
-            if ($key == 0) {
-                $this->addReference('typeImage', $typeImage);
-            }
+            $this->addReference('typeImage' . $typeImage->getLibelle(), $typeImage);
         }
     }
 }

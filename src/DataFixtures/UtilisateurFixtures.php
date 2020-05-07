@@ -25,7 +25,7 @@ class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
         $utilisateur->setEmail('user@gmail.com');
         $utilisateur->setTelephone('0101010101');
         $utilisateur->setDateNaissance(new \DateTime('1976-01-01'));
-        $utilisateur->setPlainPassword('toto');
+        $utilisateur->setPlainPassword('123456');
         $utilisateur->setIdGenre($this->getReference('genre'));
         $this->utilisateurService->save($utilisateur);
 
@@ -36,7 +36,7 @@ class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
         $utilisateur->setEmail('admin@gmail.com');
         $utilisateur->setTelephone('0202020202');
         $utilisateur->setDateNaissance(new \DateTime('1976-01-02'));
-        $utilisateur->setPlainPassword('toto');
+        $utilisateur->setPlainPassword('123456');
         $utilisateur->setIdGenre($this->getReference('genre'));
         $this->utilisateurService->save($utilisateur);
     }

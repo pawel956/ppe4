@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Panier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method Panier|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,17 +36,18 @@ class PanierRepository extends ServiceEntityRepository
 
     /**
      * @param int $idCommande
+     * @param bool $array
      * @return int|mixed|string
      */
-    public function contenuPanier(int $idCommande)
+    public function contenuPanier(int $idCommande, bool $array)
     {
         return $this->createQueryBuilder('p')
-            ->select('p')
+            ->select('p, pr')
             ->join('p.idProduit', 'pr')
             ->where('p.idCommande = :idCommande')
             ->setParameter('idCommande', $idCommande)
             ->getQuery()
-            ->getResult();
+            ->getResult($array ? Query::HYDRATE_ARRAY : null);
     }
 
     // /**

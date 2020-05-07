@@ -10,9 +10,12 @@
             <div class="col-md-2 mx-auto">
                 <h6 class="text-white text-uppercase mt-3 mb-4">Navigation</h6>
                 <ul class="list-unstyled text-white">
-                    {% for marque in partials.marques %}
+                    {% for plateforme in partials.plateformes %}
                         <li>
-                            <a href="/PPE_Projet/produits_all.php?plateforme=ps4">{{ marque.libelle }}</a>
+                            <form action="{{ path('produits') }}" method="post">
+                                <input type="hidden" name="idPlateforme" value="{{ plateforme.id }}">
+                                <input type="submit" style="color: #fff; background-color: transparent; border: none; outline: none" value="{{ plateforme.libelle }}">
+                            </form>
                         </li>
                     {% endfor %}
                 </ul>
