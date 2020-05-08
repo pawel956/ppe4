@@ -54,6 +54,7 @@
                     </div>
                 {% endfor %}
             </div>
+            {{ knp_pagination_render(produits) }}
         {% else %}
             <div style="text-align: center;">
                 <h2>Désolé, nous n'avons pas de produits correspondant a vos critères</h2>

@@ -9,6 +9,7 @@ use App\Repository\ProduitRepository;
 use App\Repository\TypeProduitRepository;
 use App\Service\PanierService;
 use App\Service\PartialsService;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,18 +18,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProduitController extends AbstractController
 {
     /**
-     * @Route("/produits", name="produits", methods={"POST"})
+     * @Route("/produits", name="produits", methods={"GET", "POST"})
      * @param Request $request
      * @param PlateformeRepository $plateformeRepository
      * @param TypeProduitRepository $typeProduitRepository
      * @param ProduitRepository $produitRepository
      * @param PartialsService $partialsService
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, PlateformeRepository $plateformeRepository, TypeProduitRepository $typeProduitRepository, ProduitRepository $produitRepository, PartialsService $partialsService)
+    public function index(Request $request, PlateformeRepository $plateformeRepository, TypeProduitRepository $typeProduitRepository, ProduitRepository $produitRepository, PartialsService $partialsService, PaginatorInterface $paginator)
     {
         $idPlateforme = $request->request->get('idPlateforme');
         $idTypeProduit = $request->request->get('idTypeProduit');
+
+        // pour récupérer les paramètres après avoir changer de pages knp_paginator
+        if (is_null($idPlateforme) && is_null($idTypeProduit)) {
+            $session = $request->getSession();
+            $idPlateforme = $session->get('idPlateforme');
+            $idTypeProduit = $session->get('idTypeProduit');
+        }
 
         $plateforme = $plateformeRepository->findOneBy(['id' => $idPlateforme]);
         $typeProduit = $typeProduitRepository->findOneBy(['id' => $idTypeProduit]);
@@ -37,18 +46,33 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
+        // pour garder les paramètres entre les pages knp_paginator
+        $session = $request->getSession();
+        $session->set('idPlateforme', $idPlateforme);
+        $session->set('idTypeProduit', $idTypeProduit);
+
         if (!is_null($typeProduit)) {
             $produits = $produitRepository->findProductsByPlatform($plateforme, $typeProduit);
         } else {
             $produits = $produitRepository->findProductsByPlatform($plateforme);
         }
 
-        $images = $produitRepository->findProductsPictures($produits);
+        $produits_paginator = $paginator->paginate(
+            $produits,
+            $request->query->getInt('page', 1),
+            3
+        );
+
+        $produits_paginator->setCustomParameters([
+            'align' => 'center'
+        ]);
+
+        $images = $produitRepository->findProductsPictures($produits_paginator->getItems());
 
         $data = [
             'partials' => $partialsService->getData(),
             'plateforme' => $plateforme,
-            'produits' => $produits,
+            'produits' => $produits_paginator,
             'images' => $images,
             'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_BIS
         ];
