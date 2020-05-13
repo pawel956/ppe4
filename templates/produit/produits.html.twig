@@ -2,11 +2,6 @@
 
 {% block title %}{{ parent() }} - {{ plateforme.libelle }}{{ typeProduit is defined ? ' & ' ~ typeProduit.libelle : '' }}{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
-{% endblock %}
-
 {% block body %}
     {% include "partials/navbar.html.twig" %}
     <br><br><br><br><br>
@@ -66,7 +61,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('js/toastr.min.js') }}"></script>
-
     {% include "partials/gestion_panier.html.twig" %}
 {% endblock %}

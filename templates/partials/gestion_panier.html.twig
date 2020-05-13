@@ -44,7 +44,7 @@
                                 '</li>';
                         });
 
-                        data_panier += '<br><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>';
+                        data_panier += '<br><a class="btn btn-primary" href="{{ path('panier') }}">Afficher le panier</a>';
 
                         if (!contenu_panier.length) {
                             data_panier += '</ul>';
@@ -103,7 +103,7 @@
                                     '</li>';
                             });
 
-                            data_panier += '<br><a class="btn btn-primary" href="/PPE_Projet/compte/panier.php">Afficher le panier</a>';
+                            data_panier += '<br><a class="btn btn-primary" href="{{ path('panier') }}">Afficher le panier</a>';
                             contenu_panier.html(data_panier);
                         }
                     } else {

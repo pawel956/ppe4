@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Panier{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+
+    {% include "partials/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include "partials/gestion_panier.html.twig" %}
+{% endblock %}
