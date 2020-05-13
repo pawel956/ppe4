@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Inscription (2/2){% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="container" style="position: relative;z-index:948;">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <header class="card-header">
+                        <h4 class="card-title mt-2 text-center">Inscription (2/2)</h4>
+                    </header>
+                    <article class="card-body">
+                        {{ form_start(registrationForm,  {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.numeroRue) }}
+                            </div>
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.rue) }}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.codePostal) }}
+                            </div>
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.ville) }}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.region) }}
+                            </div>
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.pays) }}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {{ form_row(registrationForm.infoComp) }}
+                            </div>
+                            <div class="col form-group">
+                                {{ form_label(registrationForm.description) }}
+                                {{ form_widget(registrationForm.description) }}
+                                <div style="text-align: center">
+                                    {{ form_help(registrationForm.description) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <small class="text-muted">Vous pouvez ajouter d'autres adresses plus tard.</small>
+
+                        {{ form_widget(registrationForm.recaptcha) }}
+                        <br>
+
+                        <div class="form-group">
+                            <div class="col-md-4 offset-md-4">
+                                {{ form_widget(registrationForm.submit) }}
+                            </div>
+                        </div>
+
+                        {{ form_rest(registrationForm) }}
+
+                        {{ form_end(registrationForm) }}
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

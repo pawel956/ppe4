@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Ville
  *
- * @ORM\Table(name="ville")
+ * @ORM\Table(name="ville", indexes={@ORM\Index(name="id_region", columns={"id_region"})})
  * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")
  */
 class Ville
@@ -35,6 +35,16 @@ class Ville
      */
     private $libelle;
 
+    /**
+     * @var \Region
+     *
+     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_region", referencedColumnName="id")
+     * })
+     */
+    private $idRegion;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +70,18 @@ class Ville
     public function setLibelle(?string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getIdRegion(): ?Region
+    {
+        return $this->idRegion;
+    }
+
+    public function setIdRegion(?Region $idRegion): self
+    {
+        $this->idRegion = $idRegion;
 
         return $this;
     }

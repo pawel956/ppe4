@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Habiter
  *
- * @ORM\Table(name="habiter", indexes={@ORM\Index(name="id_utilisateur", columns={"id_utilisateur"}), @ORM\Index(name="id_propriete", columns={"id_propriete"})})
+ * @ORM\Table(name="habiter", indexes={@ORM\Index(name="id_propriete", columns={"id_propriete"}), @ORM\Index(name="id_utilisateur", columns={"id_utilisateur"})})
  * @ORM\Entity(repositoryClass="App\Repository\HabiterRepository")
  */
 class Habiter
@@ -24,9 +24,9 @@ class Habiter
     /**
      * @var bool|null
      *
-     * @ORM\Column(name="defaut", type="boolean", nullable=true)
+     * @ORM\Column(name="defaut", type="boolean", nullable=true, options={"default"="1"})
      */
-    private $defaut;
+    private $defaut = true;
 
     /**
      * @var string|null

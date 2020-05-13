@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class RegistrationFormType extends AbstractType
 {
@@ -71,6 +72,7 @@ class RegistrationFormType extends AbstractType
             ->add('telephone', TelType::class, [
                 'label' => 'Numéro de téléphone',
                 'attr' => [
+                    'maxlength' => 10,
                     'placeholder' => 'xx.xx.xx.xx.xx'
                 ],
                 'constraints' => [
@@ -186,7 +188,7 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'S\'inscrire',
+                'label' => 'Poursuivre l\'inscription',
                 'attr' => [
                     'class' => 'btn btn-primary btn-block'
                 ]

@@ -23,7 +23,7 @@ class Utilisateur implements UserInterface
     /**
      * @ORM\Column(type="boolean",  options={"default" : "1"})
      */
-    private $actif = '1';
+    private $actif = true;
 
     /**
      * @ORM\Column(type="json")
@@ -261,6 +261,18 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
+    public function getDateDerniereConnexion(): ?\DateTimeInterface
+    {
+        return $this->date_derniere_connexion;
+    }
+
+    public function setDateDerniereConnexion(?\DateTimeInterface $date_derniere_connexion): self
+    {
+        $this->date_derniere_connexion = $date_derniere_connexion;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -278,15 +290,4 @@ class Utilisateur implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getDateDerniereConnexion(): ?\DateTimeInterface
-    {
-        return $this->date_derniere_connexion;
-    }
-
-    public function setDateDerniereConnexion(?\DateTimeInterface $date_derniere_connexion): self
-    {
-        $this->date_derniere_connexion = $date_derniere_connexion;
-
-        return $this;
-    }
 }
