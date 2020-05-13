@@ -74,7 +74,7 @@ class ProduitController extends AbstractController
             'plateforme' => $plateforme,
             'produits' => $produits_paginator,
             'images' => $images,
-            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_BIS
+            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
         ];
 
         if (!is_null($typeProduit)) {
@@ -107,7 +107,7 @@ class ProduitController extends AbstractController
             'partials' => $partialsService->getData(),
             'produit' => $produit,
             'images' => $images,
-            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_BIS
+            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
         ]);
     }
 

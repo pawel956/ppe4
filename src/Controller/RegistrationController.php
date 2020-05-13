@@ -59,7 +59,7 @@ class RegistrationController extends AbstractController
             $utilisateurService->save($user);
 
             $data = [
-                'domain' => Constants::DOMAIN_NAME,
+                'domain' => $request->getHost(),
                 'id' => $user->getId(),
                 'prenom' => $user->getPrenom(),
                 'token' => $token
