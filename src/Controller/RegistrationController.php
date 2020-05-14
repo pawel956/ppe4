@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
                 'token' => $token
             ];
 
-            $message = (new Swift_Message('Confirmation de votre compte GamesMarket'))
+            $message = (new Swift_Message('Confirmation de votre compte Games Market'))
                 ->setFrom(Constants::EMAIL)
                 ->setTo($user->getEmail())
                 ->setBody($this->renderView('registration/confirmation_email.html.twig', [

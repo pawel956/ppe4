@@ -68,8 +68,6 @@ class ImageService
         try {
             $file->move($this->appKernel->getProjectDir() . Constants::PROFILE_PICTURES_DIRECTORY, $newFilenameExtension);
         } catch (FileException $ex) {
-            // ... handle exception if something happens during file upload
-            dump($ex);
             die;
         }
 
