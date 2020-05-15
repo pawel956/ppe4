@@ -1,0 +1,47 @@
+{% extends 'base_administration.html.twig' %}
+
+{% block body %}
+    <h1>Utilisateurs</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Actif</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Email</th>
+            <th>Telephone</th>
+            <th>Date_naissance</th>
+            <th>Date_derniere_connexion</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr>
+                <td>{{ utilisateur.id }}</td>
+                <td>{{ utilisateur.actif ? 'Oui' : 'Non' }}</td>
+                <td>{{ utilisateur.nom }}</td>
+                <td>{{ utilisateur.prenom }}</td>
+                <td>{{ utilisateur.email }}</td>
+                <td>{{ utilisateur.telephone }}</td>
+                <td>{{ utilisateur.dateNaissance ? utilisateur.dateNaissance|date('d/m/Y') : '' }}</td>
+                <td>{{ utilisateur.dateDerniereConnexion ? utilisateur.dateDerniereConnexion|date('d/m/Y H:i:s') : '' }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('utilisateur_show', {'id': utilisateur.id}) }}">Voir</a>
+                    <a class="btn btn-secondary"
+                       href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}">Éditer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('utilisateur_new') }}">Créer un nouveau utilisateur</a>
+    <a class="btn btn-secondary" href="{{ path('index') }}">Quitter l'administration</a>
+{% endblock %}

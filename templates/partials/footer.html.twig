@@ -110,7 +110,7 @@
     </div>
     {% if is_granted('ROLE_ADMIN') %}
         <div class="text-center hypertext">
-            <a href="#">Administration</a>
+            <a href="{{ path('utilisateur_index') }}">Administration</a>
         </div>
         <br>
     {% endif %}
