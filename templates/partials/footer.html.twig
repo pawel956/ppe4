@@ -14,7 +14,9 @@
                         <li>
                             <form action="{{ path('produits') }}" method="post">
                                 <input type="hidden" name="idPlateforme" value="{{ plateforme.id }}">
-                                <input type="submit" style="color: #fff; background-color: transparent; border: none; outline: none" value="{{ plateforme.libelle }}">
+                                <input type="submit"
+                                       style="color: #fff; background-color: transparent; border: none; outline: none"
+                                       value="{{ plateforme.libelle }}">
                             </form>
                         </li>
                     {% endfor %}
@@ -104,8 +106,7 @@
         </li>
     </ul>
     <div class="footer-copyright text-center py-3 hypertext">
-        &copy; {{ partials.year }} Copyright &nbsp;
-        <a href="#">Designed by Pawel</a>
+        &copy; {{ partials.year }} Copyright | <a href="#">Designed by Pawel</a>
     </div>
     {% if is_granted('ROLE_ADMIN') %}
         <div class="text-center hypertext">
