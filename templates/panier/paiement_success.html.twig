@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Paiement{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        <div class="container">
+            <div class="py-5 text-center">
+                <img class="d-block mx-auto mb-4" src="{{ asset('images/success.jpg') }}" alt="" width="72" height="72">
+                <h2>Merci pour votre achat !</h2>
+                <br>
+                <p class="lead">
+                    Vous retrouverez le contenu de votre commande ainsi que votre facture dans la rubrique
+                    "Mes commandes".
+                    <br>
+                    N'hésitez pas à nous contacter pour toute question relative à votre commande en utilisant le
+                    formulaire de contact.
+                </p>
+                <br>
+                <a class="btn btn-primary btn-lg btn-block" href="#">Mes commandes</a>
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html.twig" %}
+{% endblock %}

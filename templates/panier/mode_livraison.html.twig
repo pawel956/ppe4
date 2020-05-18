@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Paiement{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        <div class="container">
+            <div class="py-5 text-center">
+                <img class="d-block mx-auto mb-4" src="{{ asset('images/logo.jpg') }}" alt="" width="72" height="72">
+                <h2>Paiement</h2>
+                <br>
+                <p class="lead">
+                    Veuillez choisir votre mode de livraison pour valider votre commande.
+                    <br>
+                    Merci de vérifier que le protocole de cette page commence par HTTPS pour une sécurité optimale.
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-8 order-md-1">
+                    <h4 class="mb-3">Mode de livraison</h4>
+                    <form>
+                        <hr class="mb-4">
+                        <div class="d-block my-3">
+                            {% for mode_livraison in modes_livraison %}
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input"
+                                           id="customRadio{{ mode_livraison.id }}" name="mode_livraison"
+                                           value="{{ mode_livraison.id }}">
+                                    <label class="custom-control-label" for="customRadio{{ mode_livraison.id }}">
+                                        {{ mode_livraison.libelle }} &plus;{{ mode_livraison.prix }}&euro; (livraison
+                                        prévue le
+                                        {{ "now"|date_modify("+" ~ mode_livraison.delai ~ " day")|date("d/m/Y") }})
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" id="bouton" type="submit">Confirmer le choix du
+                            mode de livraison
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html.twig" %}
+{% endblock %}

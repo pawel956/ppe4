@@ -32,7 +32,7 @@
     </button>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#shop">
-        <a href="{{ path('panier') }}">
+        <a href="{{ path('panier_index') }}">
             <span class="fas fa-shopping-cart"></span>
         </a>
         {% if is_granted('ROLE_USER') %}
@@ -132,7 +132,7 @@
                             </li>
                         {% endfor %}
                         <br>
-                        <a class="btn btn-primary" href="{{ path('panier') }}">Afficher le panier</a>
+                        <a class="btn btn-primary" href="{{ path('panier_index') }}">Afficher le panier</a>
                     </ul>
                 {% endif %}
             </div>

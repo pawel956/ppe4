@@ -13,10 +13,13 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * @Route("/api", name="api_")
+ */
 class WebServicesController extends AbstractController
 {
     /**
-     * @Route("/api/produit/all", name="api_produit_all")
+     * @Route("/produit/all", name="produit_all", methods={"GET"})
      */
     public function webserviceProduitAll(): Response
     {
@@ -33,7 +36,7 @@ class WebServicesController extends AbstractController
     }
 
     /**
-     * @Route("/api/produit/delete", name="api_produit_delete", methods={"POST"})
+     * @Route("/produit/delete", name="produit_delete", methods={"POST"})
      * @param Request $request
      * @param ProduitService $produitService
      * @return Response

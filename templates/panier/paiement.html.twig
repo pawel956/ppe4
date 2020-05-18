@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Panier{% endblock %}
+{% block title %}{{ parent() }} - Paiement{% endblock %}
 
 {% block body %}
     {% include "partials/navbar.html.twig" %}
@@ -9,9 +9,13 @@
         <div class="container">
             <div class="py-5 text-center">
                 <img class="d-block mx-auto mb-4" src="{{ asset('images/logo.jpg') }}" alt="" width="72" height="72">
-                <h2>Paiement</h2><br/>
-                <p class="lead">Veuillez choisir votre moyen de paiement pour valider votre commande. <br/>Merci de
-                    vérifier que le protocole de cette page commence par HTTPS pour une sécurité optimale.</p>
+                <h2>Paiement</h2>
+                <br>
+                <p class="lead">
+                    Veuillez choisir votre mode de paiement pour valider votre commande.
+                    <br>
+                    Merci de vérifier que le protocole de cette page commence par HTTPS pour une sécurité optimale.
+                </p>
             </div>
             <div class="row">
                 <div class="col-md-8 order-md-1">
@@ -83,7 +87,7 @@
                 // This function captures the funds from the transaction.
                 return actions.order.capture().then(function () {
                     // This function shows a transaction success message to your buyer.
-                    document.location.href = '{{ path('index') }}';
+                    document.location.href = '{{ path('panier_paiement_success') }}';
                 });
             }
         }).render('#paypal-button-container');

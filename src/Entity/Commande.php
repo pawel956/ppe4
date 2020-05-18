@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Commande
  *
- * @ORM\Table(name="commande", indexes={@ORM\Index(name="id_code_promo", columns={"id_code_promo"}), @ORM\Index(name="id_propriete", columns={"id_propriete"}), @ORM\Index(name="id_utilisateur", columns={"id_utilisateur"})})
+ * @ORM\Table(name="commande", indexes={@ORM\Index(name="id_code_promo", columns={"id_code_promo"}), @ORM\Index(name="id_propriete", columns={"id_propriete"}), @ORM\Index(name="id_utilisateur", columns={"id_utilisateur"}), @ORM\Index(name="id_mode_livraison", columns={"id_mode_livraison"})})
  * @ORM\Entity(repositoryClass="App\Repository\CommandeRepository")
  */
 class Commande
@@ -38,9 +38,19 @@ class Commande
     /**
      * @var string|null
      *
-     * @ORM\Column(name="facture_pdf", type="string", length=50, nullable=true)
+     * @ORM\Column(name="facture_pdf", type="string", length=255, nullable=true)
      */
     private $facturePdf;
+
+    /**
+     * @var \ModeLivraison
+     *
+     * @ORM\ManyToOne(targetEntity="ModeLivraison")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_mode_livraison", referencedColumnName="id")
+     * })
+     */
+    private $idModeLivraison;
 
     /**
      * @var \CodePromo
@@ -109,6 +119,18 @@ class Commande
     public function setFacturePdf(?string $facturePdf): self
     {
         $this->facturePdf = $facturePdf;
+
+        return $this;
+    }
+
+    public function getIdModeLivraison(): ?ModeLivraison
+    {
+        return $this->idModeLivraison;
+    }
+
+    public function setIdModeLivraison(?ModeLivraison $idModeLivraison): self
+    {
+        $this->idModeLivraison = $idModeLivraison;
 
         return $this;
     }
