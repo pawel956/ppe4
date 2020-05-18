@@ -14,10 +14,10 @@
                         <div class="card">
                             <div class="parent">
                                 <img class="card-img-top padding resize"
-                                     src="{{ asset(produitPicturesDirectory ~ images[produit.idProduit.id][0].libelle ~ '.' ~ images[produit.idProduit.id][0].idTypeImage.libelle) }}">
+                                     src="{{ asset(productPicturesDirectory ~ images[produit.idProduit.id][0].libelle ~ '.' ~ images[produit.idProduit.id][0].idTypeImage.libelle) }}">
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{ produit.idProduit.libelle }}</h5>
+                                <h5 class="card-title">{{ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? ('<span class="badge ' ~ produit.idPlateforme.couleur ~ '">' ~ produit.idPlateforme.libelle ~ '</span> ') | raw : '' }}{{ produit.idProduit.libelle }}</h5>
                                 <h5>
                                     {% if produit.idProduit.prixTemporaire is empty %}
                                         {{ produit.idProduit.prix }} &euro;
@@ -31,6 +31,7 @@
                                 <div class="row justify-content-center">
                                     <form action="{{ path('produit') }}" method="post">
                                         <input type="hidden" name="idProduit" value="{{ produit.idProduit.id }}">
+                                        <input type="hidden" name="idPlateforme" value="{{ plateforme.id }}">
                                         <input type="submit" class="btn btn-primary btn-sm" value="Détails">
                                     </form>
                                     &nbsp;
@@ -40,7 +41,10 @@
                                     {% else %}
                                         <a class="btn btn-success btn-sm ajout_panier" href="#"
                                            idProduit="{{ produit.idProduit.id }}"
-                                           libelle="{{ produit.idProduit.libelle }}">Ajouter
+                                           idPlateforme="{{ plateforme.id }}"
+                                           libelle="{{ produit.idProduit.libelle }}"
+                                           libellePlateforme="{{ plateforme.libelle }}"
+                                                {{ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' ~ produit.idProduit.idTypeProduit.libelle : '' }}>Ajouter
                                             au panier</a>
                                     {% endif %}
                                 </div>

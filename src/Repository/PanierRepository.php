@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Commande;
 use App\Entity\Panier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -21,33 +22,44 @@ class PanierRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $idCommande
+     * @param Commande $commande
      * @return int|mixed|string
      */
-    public function numberProducts(int $idCommande)
+    public function numberProducts(Commande $commande)
     {
         return $this->createQueryBuilder('p')
             ->select('SUM(p.quantite) AS quantite')
             ->where('p.idCommande = :idCommande')
-            ->setParameter('idCommande', $idCommande)
+            ->setParameter('idCommande', $commande)
             ->getQuery()
-            ->getResult();
+            ->getResult()[0]['quantite'];
     }
 
     /**
-     * @param int $idCommande
+     * @param Commande $commande
      * @param bool $array
      * @return int|mixed|string
      */
-    public function contenuPanier(int $idCommande, bool $array)
+    public function contenuPanier(Commande $commande, bool $array)
     {
         return $this->createQueryBuilder('p')
-            ->select('p, pr')
+            ->select('p, pr, t, pl')
             ->join('p.idProduit', 'pr')
+            ->join('pr.idTypeProduit', 't')
+            ->join('p.idPlateforme', 'pl')
             ->where('p.idCommande = :idCommande')
-            ->setParameter('idCommande', $idCommande)
+            ->setParameter('idCommande', $commande)
             ->getQuery()
             ->getResult($array ? Query::HYDRATE_ARRAY : null);
+    }
+
+    public function totalPanier(Commande $commande){
+        return $this->createQueryBuilder('p')
+            ->select('SUM(p.prix * p.quantite) AS total')
+            ->where('p.idCommande = :idCommande')
+            ->setParameter('idCommande', $commande)
+            ->getQuery()
+            ->getResult()[0]['total'];
     }
 
     // /**

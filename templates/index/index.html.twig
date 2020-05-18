@@ -48,23 +48,26 @@
                     <div class="card">
                         <div class="parent">
                             <img class="card-img-top padding resize"
-                                 src="{{ asset(produitPicturesDirectory ~ images[produit.id][0].libelle ~ '.' ~ images[produit.id][0].idTypeImage.libelle) }}">
+                                 src="{{ asset(productPicturesDirectory ~ images[produit.idProduit.id][0].libelle ~ '.' ~ images[produit.idProduit.id][0].idTypeImage.libelle) }}">
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ produit.libelle }}</h5>
+                            <h5 class="card-title"><span
+                                        class="badge {{ produit.idPlateforme.couleur }}">{{ produit.idPlateforme.libelle }}</span> {{ produit.idProduit.libelle }}
+                            </h5>
                             <h5>
-                                {% if produit.prixTemporaire is empty %}
-                                    {{ produit.prix }} &euro;
+                                {% if produit.idProduit.prixTemporaire is empty %}
+                                    {{ produit.idProduit.prix }} &euro;
                                 {% else %}
-                                    <s>{{ produit.prix }} &euro;</s>
-                                    {{ produit.prixTemporaire }} &euro;
+                                    <s>{{ produit.idProduit.prix }} &euro;</s>
+                                    {{ produit.idProduit.prixTemporaire }} &euro;
                                 {% endif %}
                             </h5>
                         </div>
                         <div class="card-footer">
                             <div class="row justify-content-center">
                                 <form action="{{ path('produit') }}" method="post">
-                                    <input type="hidden" name="idProduit" value="{{ produit.id }}">
+                                    <input type="hidden" name="idProduit" value="{{ produit.idProduit.id }}">
+                                    <input type="hidden" name="idPlateforme" value="{{ produit.idPlateforme.id }}">
                                     <input type="submit" class="btn btn-primary btn-sm" value="Détails">
                                 </form>
                                 &nbsp;
@@ -72,8 +75,12 @@
                                     <a class="btn btn-success btn-sm" href="{{ path('app_login') }}">Ajouter au
                                         panier</a>
                                 {% else %}
-                                    <a class="btn btn-success btn-sm ajout_panier" href="#" idProduit="{{ produit.id }}"
-                                       libelle="{{ produit.libelle }}">Ajouter
+                                    <a class="btn btn-success btn-sm ajout_panier" href="#"
+                                       idProduit="{{ produit.idProduit.id }}"
+                                       idPlateforme="{{ produit.idPlateforme.id }}"
+                                       libelle="{{ produit.idProduit.libelle }}"
+                                       libellePlateforme="{{ produit.idPlateforme.libelle }}"
+                                            {{ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' ~ produit.idProduit.idTypeProduit.libelle : '' }}>Ajouter
                                         au panier</a>
                                 {% endif %}
                             </div>

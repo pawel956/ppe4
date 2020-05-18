@@ -1,0 +1,14 @@
+/*PS4*/
+.badge-primary {
+    background-color: #3498db;
+}
+
+/*XBOX ONE*/
+.badge-secondary {
+    background-color: #2ecc71;
+}
+
+/*PC*/
+.badge-success {
+    background-color: #95a5a6;
+}

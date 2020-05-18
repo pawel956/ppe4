@@ -21,7 +21,7 @@
                             {% for image in images %}
                                 <div class="carousel-item {{ loop.first ? 'active' : '' }}">
                                     <img class="w-100 resize_produit"
-                                         src="{{ asset(produitPicturesDirectory ~ image.libelle ~ '.' ~ image.idTypeImage.libelle) }}">
+                                         src="{{ asset(productPicturesDirectory ~ image.libelle ~ '.' ~ image.idTypeImage.libelle) }}">
                                 </div>
                             {% endfor %}
                         </div>
@@ -60,7 +60,27 @@
                             <dt>Marque</dt>
                             <dd>{{ produit.idMarque.libelle }}</dd>
                         </dl>
-                        <br>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <dl class="dlist-inline">
+                                    <dt>Plateforme :</dt>
+                                    {% for plateforme in plateformes %}
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input"
+                                                   id="plateforme{{ plateforme.id }}" name="plateforme"
+                                                   idPlateforme="{{ plateforme.id }}"
+                                                   libellePlateforme="{{ plateforme.libelle }}" {{ plateforme.checked ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="plateforme{{ plateforme.id }}">
+                                                <span class="badge {{ plateforme.couleur }}">
+                                                    {{ plateforme.libelle }}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </dl>
+                            </div>
+                        </div>
                         <hr>
                         {% if not is_granted('ROLE_USER') %}
                             <div style="text-align: center;">
@@ -68,8 +88,11 @@
                             </div>
                         {% else %}
                             <div style="text-align: center;">
-                                <a class="btn btn-success ajout_panier" href="#" idProduit="{{ produit.id }}" libelle="{{ produit.libelle }}">Ajouter
-                                    au panier</a>
+                                <a class="btn btn-success ajout_panier" href="#" idProduit="{{ produit.id }}"
+                                   libelle="{{ produit.libelle }}"
+                                        {{ produit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' ~ produit.idTypeProduit.libelle : '' }}>
+                                    Ajouter au panier
+                                </a>
                             </div>
                         {% endif %}
                     </article>

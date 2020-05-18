@@ -25,7 +25,7 @@ class IndexController extends AbstractController
             'partials' => $partialsService->getData(),
             'produits' => $data['produits'],
             'images' => $data['images'],
-            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
+            'productPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
         ]);
     }
 }

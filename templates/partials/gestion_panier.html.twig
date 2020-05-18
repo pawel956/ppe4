@@ -6,13 +6,26 @@
             let idProduit = $(this).attr("idProduit");
             let libelle = $(this).attr("libelle");
 
+            let idPlateforme = $(this).attr("idPlateforme");
+            if (idPlateforme === undefined) {
+                idPlateforme = $('input[type="radio"]:checked').attr("idPlateforme");
+            }
+
+            let libellePlateforme = $(this).attr("libellePlateforme");
+            if (libellePlateforme === undefined) {
+                libellePlateforme = $('input[type="radio"]:checked').attr("libellePlateforme");
+            }
+
+            let libelleTypeProduit = $(this).attr("libelleTypeProduit");
+
             $.ajax({
                 method: 'POST',
                 url: '{{ path('add_panier') }}',
-                data: {idProduit: idProduit},
+                data: {idProduit: idProduit, idPlateforme: idPlateforme},
                 success: function (data) {
                     if (data.success === true) {
-                        toastr.success('Vous avez ajouté ' + libelle + ' au panier !');
+                        let plateforme = libelleTypeProduit != undefined ? ' (' + libellePlateforme + ')' : '';
+                        toastr.success('Vous avez ajouté ' + libelle + plateforme + ' au panier !');
 
                         qte_panier = data.panier.quantite;
 
@@ -27,18 +40,20 @@
                         }
 
                         data.panier.contenu.forEach(produit => {
+                            plateforme = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '<span class="badge ' + produit.idPlateforme.couleur + '">' + produit.idPlateforme.libelle + '</span> ' : '';
                             qte = produit.quantite > 1 ? ' (×' + produit.quantite + ')' : '';
+                            typeProduit = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' + produit.idProduit.idTypeProduit.libelle : '';
+
                             data_panier += '<li>' +
                                 '<span class="item">' +
                                 '<span class="item-left padding_recap">' +
-                                '<span class="item-info">' +
+                                plateforme +
                                 produit.idProduit.libelle +
                                 qte +
                                 ' - ' + Math.round(produit.prix * produit.quantite * 100) / 100 + '&euro;' +
                                 '</span>' +
-                                '</span>' +
                                 '<span class="item-right">' +
-                                '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" libelle="' + produit.idProduit.libelle + '">&times;</a>' +
+                                '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" idPlateforme="' + produit.idPlateforme.id + '" libelle="' + produit.idProduit.libelle + '" libellePlateforme="' + produit.idPlateforme.libelle + '" ' + typeProduit + '>&times;</a>' +
                                 '</span>' +
                                 '</span>' +
                                 '</li>';
@@ -55,7 +70,8 @@
                             contenu_panier.html(data_panier);
                         }
                     } else {
-                        toastr.error('Erreur lors de l\'ajout ' + libelle + ' au panier !');
+                        let plateforme = libelleTypeProduit != undefined ? ' (' + libellePlateforme + ')' : '';
+                        toastr.error('Erreur lors de l\'ajout ' + libelle + plateforme + ' au panier !');
                     }
                 }
             })
@@ -65,14 +81,18 @@
         $(document).on('click', '.supprimer_panier', function (e) {
             let idProduit = $(this).attr("idProduit");
             let libelle = $(this).attr("libelle");
+            let idPlateforme = $(this).attr("idPlateforme");
+            let libellePlateforme = $(this).attr("libellePlateforme");
+            let libelleTypeProduit = $(this).attr("libelleTypeProduit");
 
             $.ajax({
                 method: 'POST',
                 url: '{{ path('remove_panier') }}',
-                data: {idProduit: idProduit},
+                data: {idProduit: idProduit, idPlateforme: idPlateforme},
                 success: function (data) {
                     if (data.success === true) {
-                        toastr.success('Vous avez supprimé ' + libelle + ' du panier !');
+                        let plateforme = libelleTypeProduit != undefined ? ' (' + libellePlateforme + ')' : '';
+                        toastr.success('Vous avez supprimé ' + libelle + plateforme + ' du panier !');
 
                         qte_panier = data.panier.quantite;
 
@@ -86,18 +106,20 @@
                             contenu_panier.remove();
                         } else {
                             data.panier.contenu.forEach(produit => {
+                                plateforme = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '<span class="badge ' + produit.idPlateforme.couleur + '">' + produit.idPlateforme.libelle + '</span> ' : '';
                                 qte = produit.quantite > 1 ? ' (×' + produit.quantite + ')\n' : '';
+                                typeProduit = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' + produit.idProduit.idTypeProduit.libelle : '';
+
                                 data_panier += '<li>' +
                                     '<span class="item">' +
                                     '<span class="item-left padding_recap">' +
-                                    '<span class="item-info">' +
+                                    plateforme +
                                     produit.idProduit.libelle +
                                     qte +
                                     ' - ' + Math.round(produit.prix * produit.quantite * 100) / 100 + '&euro;' +
                                     '</span>' +
-                                    '</span>' +
                                     '<span class="item-right">' +
-                                    '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" libelle="' + produit.idProduit.libelle + '">&times;</a>' +
+                                    '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" idPlateforme="' + produit.idPlateforme.id + '" libelle="' + produit.idProduit.libelle + '" libellePlateforme="' + produit.idPlateforme.libelle + '" ' + typeProduit + '>&times;</a>' +
                                     '</span>' +
                                     '</span>' +
                                     '</li>';
@@ -107,7 +129,8 @@
                             contenu_panier.html(data_panier);
                         }
                     } else {
-                        toastr.error('Erreur lors de la suppression de ' + libelle + ' du panier !');
+                        let plateforme = libelleTypeProduit != undefined ? ' (' + libellePlateforme + ')' : '';
+                        toastr.error('Erreur lors de la suppression de ' + libelle + plateforme + ' du panier !');
                     }
                 }
             })

@@ -4,7 +4,91 @@
 
 {% block body %}
     {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        <main class="page">
+            <section class="shopping-cart">
+                <div class="row">
+                    <div class="col-md-12 col-lg-8">
+                        <div class="items">
+                            {% for produit in panier %}
+                                <div class="product">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img class="img-fluid mx-auto d-block image"
+                                                 src="{{ asset(productPicturesDirectory ~ images[produit.idProduit.id][0].libelle ~ '.' ~ images[produit.idProduit.id][0].idTypeImage.libelle) }}">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="info">
+                                                <div class="row">
+                                                    <div class="col-md-6 product-name">
+                                                        <a class="text-black text-link" href="#">
+                                                            <span class="badge {{ produit.idPlateforme.couleur }}">
+                                                                {{ produit.idPlateforme.libelle }}
+                                                            </span>
+                                                            {{ produit.idProduit.libelle }}
+                                                        </a>
+                                                        <div class="product-info">
+                                                            <div>Marque :
+                                                                <span class="value uppercase">{{ produit.idProduit.idMarque.libelle }}</span>
+                                                            </div>
+                                                            <div>Quantité :
+                                                                <span class="value uppercase">{{ produit.quantite }}</span>
+                                                            </div>
 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 price">
+                                                        &nbsp;&nbsp;<span>{{ produit.prix }} &euro;</span>&nbsp;&nbsp;&nbsp;
+                                                        <a href="/PPE_Projet/scripts/traitement_supprimer_produit.php?identifiant_produit=<?php echo $row['identifiant']; ?>&1"
+                                                           class="btn btn-danger btn-sm">&minus;1</a>
+                                                        <a href="/PPE_Projet/scripts/traitement_supprimer_produit.php?identifiant_produit=<?php echo $row['identifiant']; ?>"
+                                                           class="btn btn-danger btn-sm">&times;</a>
+                                                        <a href="/PPE_Projet/scripts/traitement_supprimer_produit.php?identifiant_produit=<?php echo $row['identifiant']; ?>"
+                                                           class="btn btn-danger btn-sm">&plus;1</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-4">
+                        <div class="summary">
+                            <h3>Récapitulatif</h3>
+                            <div class="summary-item">
+                                <span class="text">Nombre d'articles :</span>
+                                <span class="price">{{ qtePanier }}</span>
+                            </div>
+                            <br>
+                            <div class="summary-item">
+                                <span class="text">Sous-total :</span>
+                                <span class="price">{{ totalPanier }} &euro;</span>
+                            </div>
+                            <br>
+                            <div class="card p-2">
+                                <input type="text" class="form-control" placeholder="Code promo" minlength="8"
+                                       maxlength="8">
+                                <button type="submit" class="btn btn-secondary">Soumettre</button>
+                                <div style="text-align: center">
+                                    <small class="text-muted">Un seul code promotionnel est applicable.</small>
+                                </div>
+                            </div>
+                            <br>
+                            <a class="btn btn-primary btn-lg btn-block" href="{{ path('paiement') }}">
+                                Paiement
+                            </a>
+                            <div style="text-align: center">
+                                <small class="text-muted">Le total de la commande inclut la TVA.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
     {% include "partials/footer.html.twig" %}
 {% endblock %}
 

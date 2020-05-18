@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Commande;
 use App\Entity\Panier;
+use App\Entity\Plateforme;
 use App\Entity\Produit;
 use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,35 +82,58 @@ class PanierService
 
     /**
      * @param int $idProduit
+     * @param int $idPlateforme
      * @param int $idUtilisateur
-     * @return bool
+     * @return array|bool
      */
-    public function addProduct(int $idProduit, int $idUtilisateur)
+    public function getMainData(int $idProduit, int $idPlateforme, int $idUtilisateur)
     {
-        /** @var Produit $produit */
         $produit = $this->em->getRepository(Produit::class)->findOneBy(['id' => $idProduit]);
-
+        $plateforme = $this->em->getRepository(Plateforme::class)->findOneBy(['id' => $idPlateforme]);
         $utilisateur = $this->getUtilisateur($idUtilisateur);
 
-        if (is_null($produit) || is_null($utilisateur)) {
+        if (is_null($produit) || is_null($plateforme) || is_null($utilisateur)) {
             return false;
         }
 
         $commande = $this->getCommande($utilisateur);
 
+        return [
+            'produit' => $produit,
+            'plateforme' => $plateforme,
+            'utilisateur' => $utilisateur,
+            'commande' => $commande
+        ];
+    }
+
+    /**
+     * @param int $idProduit
+     * @param int $idPlateforme
+     * @param int $idUtilisateur
+     * @return bool
+     */
+    public function addProduct(int $idProduit, int $idPlateforme, int $idUtilisateur)
+    {
+        $data = $this->getMainData($idProduit, $idPlateforme, $idUtilisateur);
+
+        if (!$data) {
+            return $data;
+        }
+
         /** @var Panier $panier */
-        $panier = $this->em->getRepository(Panier::class)->findOneBy(['idProduit' => $produit, 'idCommande' => $commande]);
+        $panier = $this->em->getRepository(Panier::class)->findOneBy(['idProduit' => $data['produit'], 'idPlateforme' => $data['plateforme'], 'idCommande' => $data['commande']]);
 
         if (is_null($panier)) {
             $panier = new Panier();
-            $panier->setIdProduit($produit);
-            $panier->setIdCommande($commande);
+            $panier->setIdProduit($data['produit']);
+            $panier->setIdPlateforme($data['plateforme']);
+            $panier->setIdCommande($data['commande']);
             $panier->setQuantite(1);
         } else {
             $panier->setQuantite($panier->getQuantite() + 1);
         }
 
-        $panier->setPrix(is_null($produit->getPrixTemporaire()) ? $produit->getPrix() : $produit->getPrixTemporaire());
+        $panier->setPrix(is_null($data['produit']->getPrixTemporaire()) ? $data['produit']->getPrix() : $data['produit']->getPrixTemporaire());
         $this->save($panier);
 
         return true;
@@ -117,24 +141,20 @@ class PanierService
 
     /**
      * @param int $idProduit
+     * @param int $idPlateforme
      * @param int $idUtilisateur
      * @return bool
      */
-    public function removeProduct(int $idProduit, int $idUtilisateur)
+    public function removeProduct(int $idProduit, int $idPlateforme, int $idUtilisateur)
     {
-        /** @var Produit $produit */
-        $produit = $this->em->getRepository(Produit::class)->findOneBy(['id' => $idProduit]);
+        $data = $this->getMainData($idProduit, $idPlateforme, $idUtilisateur);
 
-        $utilisateur = $this->getUtilisateur($idUtilisateur);
-
-        if (is_null($produit) || is_null($utilisateur)) {
-            return false;
+        if (!$data) {
+            return $data;
         }
 
-        $commande = $this->getCommande($utilisateur);
-
         /** @var Panier $panier */
-        $panier = $this->em->getRepository(Panier::class)->findOneBy(['idProduit' => $produit, 'idCommande' => $commande]);
+        $panier = $this->em->getRepository(Panier::class)->findOneBy(['idProduit' => $data['produit'], 'idPlateforme' => $data['plateforme'], 'idCommande' => $data['commande']]);
 
         if (is_null($panier)) {
             return false;
@@ -152,12 +172,12 @@ class PanierService
      */
     public function panierData(int $idUtilisateur, bool $array = false)
     {
-        $commandeId = $this->getCommande($this->getUtilisateur($idUtilisateur))->getId();
+        $commande = $this->getCommande($this->getUtilisateur($idUtilisateur));
         $panierRepository = $this->em->getRepository(Panier::class);
 
         $data = [
-            'contenu' => $panierRepository->contenuPanier($commandeId, $array),
-            'quantite' => $panierRepository->numberProducts($commandeId)[0]['quantite']
+            'contenu' => $panierRepository->contenuPanier($commande, $array),
+            'quantite' => $panierRepository->numberProducts($commande)
         ];
 
         $data['quantite'] = is_null($data['quantite']) ? "0" : $data['quantite'];

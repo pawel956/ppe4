@@ -29,6 +29,13 @@ class Plateforme
     private $libelle;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="couleur", type="string", length=255, nullable=false)
+     */
+    private $couleur;
+
+    /**
      * @var \Marque
      *
      * @ORM\ManyToOne(targetEntity="Marque", fetch="EAGER")
@@ -51,6 +58,18 @@ class Plateforme
     public function setLibelle(?string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getCouleur(): ?string
+    {
+        return $this->couleur;
+    }
+
+    public function setCouleur(string $couleur): self
+    {
+        $this->couleur = $couleur;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Constants;
+use App\Repository\CommandeRepository;
+use App\Repository\CompatibleRepository;
 use App\Repository\ImageRepository;
 use App\Repository\PlateformeRepository;
 use App\Repository\ProduitRepository;
@@ -60,7 +62,7 @@ class ProduitController extends AbstractController
         $produits_paginator = $paginator->paginate(
             $produits,
             $request->query->getInt('page', 1),
-            3
+            2
         );
 
         $produits_paginator->setCustomParameters([
@@ -74,7 +76,7 @@ class ProduitController extends AbstractController
             'plateforme' => $plateforme,
             'produits' => $produits_paginator,
             'images' => $images,
-            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
+            'productPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
         ];
 
         if (!is_null($typeProduit)) {
@@ -95,19 +97,23 @@ class ProduitController extends AbstractController
     public function indexProduit(Request $request, ProduitRepository $produitRepository, ImageRepository $imageRepository, PartialsService $partialsService)
     {
         $idProduit = $request->request->get('idProduit');
-        $produit = $produitRepository->findOneBy(['id' => $idProduit]);
+        $idPlateforme = $request->request->get('idPlateforme');
 
-        if (is_null($produit)) {
-            return $this->redirectToRoute('index');
+        $produit = $produitRepository->findOneBy(['id' => $idProduit]);
+        $plateformes = $produitRepository->findPlatformCompatibleProduct($produit);
+
+        foreach ($plateformes as $key => $plateforme) {
+            $plateformes[$key]['checked'] = $idPlateforme == $plateforme['id'];
         }
 
-        $images = $imageRepository->findBy(['idProduit' => $idProduit]);
+        $images = $imageRepository->findBy(['idProduit' => $produit]);
 
         return $this->render('produit/produit.html.twig', [
             'partials' => $partialsService->getData(),
             'produit' => $produit,
+            'plateformes' => $plateformes,
             'images' => $images,
-            'produitPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
+            'productPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
         ]);
     }
 
@@ -123,16 +129,16 @@ class ProduitController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             // get the value of a $_POST parameter
             $idProduit = $request->request->get('idProduit');
-            if ($idProduit) {
+            $idPlateforme = $request->request->get('idPlateforme');
+            if ($idProduit && $idPlateforme) {
                 $response = new Response();
 
                 $response->setContent(json_encode([
-                    'success' => $panierService->addProduct($idProduit, $this->getUser()->getId()),
+                    'success' => $panierService->addProduct($idProduit, $idPlateforme, $this->getUser()->getId()),
                     'panier' => $panierService->panierData($this->getUser()->getId(), true)
                 ]));
 
                 $response->headers->set('Content-Type', 'application/json');
-
                 return $response;
             }
         }
@@ -152,16 +158,16 @@ class ProduitController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             // get the value of a $_POST parameter
             $idProduit = $request->request->get('idProduit');
-            if ($idProduit) {
+            $idPlateforme = $request->request->get('idPlateforme');
+            if ($idProduit && $idPlateforme) {
                 $response = new Response();
 
                 $response->setContent(json_encode([
-                    'success' => $panierService->removeProduct($idProduit, $this->getUser()->getId()),
+                    'success' => $panierService->removeProduct($idProduit, $idPlateforme, $this->getUser()->getId()),
                     'panier' => $panierService->panierData($this->getUser()->getId(), true)
                 ]));
 
                 $response->headers->set('Content-Type', 'application/json');
-
                 return $response;
             }
         }

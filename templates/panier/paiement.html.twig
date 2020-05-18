@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Panier{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        <div class="container">
+            <div class="py-5 text-center">
+                <img class="d-block mx-auto mb-4" src="{{ asset('images/logo.jpg') }}" alt="" width="72" height="72">
+                <h2>Paiement</h2><br/>
+                <p class="lead">Veuillez choisir votre moyen de paiement pour valider votre commande. <br/>Merci de
+                    vérifier que le protocole de cette page commence par HTTPS pour une sécurité optimale.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-8 order-md-1">
+                    <h4 class="mb-3">Paiement</h4>
+                    <hr class="mb-4">
+                    <div class="d-block my-3">
+                        <div id="paypal-button-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "partials/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include "partials/gestion_panier.html.twig" %}
+    <script src="https://www.paypal.com/sdk/js?client-id={{ paypalClientId }}&currency=EUR"></script>
+
+    <script>
+        paypal.Buttons({
+            enableStandardCardFields: true,
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    intent: 'CAPTURE',
+                    payer: {
+                        name: {
+                            given_name: "{{ app.user.prenom }}",
+                            surname: "{{ app.user.nom }}"
+                        },
+                        address: {
+                            address_line_1: '123 ABC Street',
+                            address_line_2: 'Apt 2',
+                            admin_area_2: 'San Jose',
+                            admin_area_1: 'CA',
+                            postal_code: '95121',
+                            country_code: 'FR'
+                        },
+                        email_address: "sb-43q2wk1821383@business.example.com",
+                        phone: {
+                            phone_type: "MOBILE",
+                            phone_number: {
+                                national_number: "{{ app.user.telephone }}"
+                            }
+                        }
+                    },
+                    purchase_units: [
+                        {
+                            amount: {
+                                value: '{{ totalPanier }}',
+                                currency_code: 'EUR'
+                            },
+                            shipping: {
+                                address: {
+                                    address_line_1: '2211 N First Street',
+                                    address_line_2: 'Building 17',
+                                    admin_area_2: 'San Jose',
+                                    admin_area_1: 'CA',
+                                    postal_code: '95131',
+                                    country_code: 'FR'
+                                }
+                            },
+                        }
+                    ]
+                });
+            },
+            onApprove: function (data, actions) {
+                // This function captures the funds from the transaction.
+                return actions.order.capture().then(function () {
+                    // This function shows a transaction success message to your buyer.
+                    document.location.href = '{{ path('index') }}';
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
+{% endblock %}

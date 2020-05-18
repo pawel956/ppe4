@@ -9,6 +9,7 @@ use App\Entity\Produit;
 use App\Entity\TypeProduit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method Produit|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,29 +29,30 @@ class ProduitRepository extends ServiceEntityRepository
      */
     public function findLastFourProducts()
     {
-        $produits = $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'DESC')
+        $produits =$this->getEntityManager()
+            ->getRepository(Compatible::class)
+            ->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
             ->setMaxResults(4)
             ->getQuery()
             ->getResult();
 
         return [
             'produits' => $produits,
-            'images' => $this->findProductsPictures($produits, false)
+            'images' => $this->findProductsPictures($produits)
         ];
     }
 
     /**
      * @param $produits
-     * @param bool $compatible
      * @return array
      */
-    public function findProductsPictures($produits, bool $compatible = true)
+    public function findProductsPictures($produits)
     {
         $images = null;
 
         foreach ($produits as $produit) {
-            $idProduit = $compatible ? $produit->getIdProduit()->getId() : $produit->getId();
+            $idProduit = $produit->getIdProduit()->getId();
             $images[$idProduit] = $this->getEntityManager()
                 ->getRepository(Image::class)
                 ->createQueryBuilder('i')
@@ -84,6 +86,18 @@ class ProduitRepository extends ServiceEntityRepository
             ->setParameter('idPlateforme', $plateforme)
             ->andWhere('p.idTypeProduit = :idTypeProduit')
             ->setParameter('idTypeProduit', $typeProduit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findPlatformCompatibleProduct(Produit $produit){
+        return $this->getEntityManager()
+            ->getRepository(Compatible::class)
+            ->createQueryBuilder('c')
+            ->select('p.id, p.libelle, p.couleur')
+            ->join('c.idPlateforme', 'p')
+            ->where('c.idProduit = :idProduit')
+            ->setParameter('idProduit', $produit)
             ->getQuery()
             ->getResult();
     }

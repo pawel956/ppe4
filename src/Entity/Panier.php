@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Panier
  *
- * @ORM\Table(name="panier", indexes={@ORM\Index(name="id_produit", columns={"id_produit"}), @ORM\Index(name="id_commande", columns={"id_commande"})})
+ * @ORM\Table(name="panier", indexes={@ORM\Index(name="id_commande", columns={"id_commande"}), @ORM\Index(name="id_plateforme", columns={"id_plateforme"}), @ORM\Index(name="id_produit", columns={"id_produit"})})
  * @ORM\Entity(repositoryClass="App\Repository\PanierRepository")
  */
 class Panier
@@ -36,24 +36,34 @@ class Panier
     private $prix;
 
     /**
-     * @var \Produit
+     * @var \Plateforme
      *
-     * @ORM\ManyToOne(targetEntity="Produit")
+     * @ORM\ManyToOne(targetEntity="Plateforme", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_produit", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_plateforme", referencedColumnName="id")
      * })
      */
-    private $idProduit;
+    private $idPlateforme;
 
     /**
      * @var \Commande
      *
-     * @ORM\ManyToOne(targetEntity="Commande")
+     * @ORM\ManyToOne(targetEntity="Commande", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_commande", referencedColumnName="id")
      * })
      */
     private $idCommande;
+
+    /**
+     * @var \Produit
+     *
+     * @ORM\ManyToOne(targetEntity="Produit", fetch="EAGER")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_produit", referencedColumnName="id")
+     * })
+     */
+    private $idProduit;
 
     public function getId(): ?int
     {
@@ -84,14 +94,14 @@ class Panier
         return $this;
     }
 
-    public function getIdProduit(): ?Produit
+    public function getIdPlateforme(): ?Plateforme
     {
-        return $this->idProduit;
+        return $this->idPlateforme;
     }
 
-    public function setIdProduit(?Produit $idProduit): self
+    public function setIdPlateforme(?Plateforme $idPlateforme): self
     {
-        $this->idProduit = $idProduit;
+        $this->idPlateforme = $idPlateforme;
 
         return $this;
     }
@@ -104,6 +114,18 @@ class Panier
     public function setIdCommande(?Commande $idCommande): self
     {
         $this->idCommande = $idCommande;
+
+        return $this;
+    }
+
+    public function getIdProduit(): ?Produit
+    {
+        return $this->idProduit;
+    }
+
+    public function setIdProduit(?Produit $idProduit): self
+    {
+        $this->idProduit = $idProduit;
 
         return $this;
     }
