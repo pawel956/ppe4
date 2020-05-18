@@ -25,15 +25,18 @@ class PlateformeFixtures extends Fixture implements DependentFixtureInterface
         $lesPlateformes = [
             [
                 'idMarque' => $this->getReference('marquesony'),
-                'libelle' => 'PS4'
+                'libelle' => 'PS4',
+                'couleur' => 'badge-primary'
             ],
             [
                 'idMarque' => $this->getReference('marquemicrosoft'),
-                'libelle' => 'Xbox One'
+                'libelle' => 'Xbox One',
+                'couleur' => 'badge-secondary'
             ],
             [
                 'idMarque' => $this->getReference('marquesteam'),
-                'libelle' => 'PC'
+                'libelle' => 'PC',
+                'couleur' => 'badge-success'
             ]
         ];
 
@@ -41,6 +44,7 @@ class PlateformeFixtures extends Fixture implements DependentFixtureInterface
             $plateforme = new Plateforme();
             $plateforme->setIdMarque($unePlateforme['idMarque']);
             $plateforme->setLibelle($unePlateforme['libelle']);
+            $plateforme->setCouleur($unePlateforme['couleur']);
             $this->plateformeService->save($plateforme);
 
             $this->addReference('plateforme' . $this->slugify->slugify($plateforme->getLibelle()), $plateforme);
