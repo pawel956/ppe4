@@ -18,6 +18,7 @@
                 </p>
             </div>
             <div class="row">
+                {% include "panier/partials/panier.html.twig" %}
                 <div class="col-md-8 order-md-1">
                     <h4 class="mb-3">Paiement</h4>
                     <hr class="mb-4">
@@ -34,26 +35,26 @@
 {% block javascripts %}
     {{ parent() }}
     {% include "partials/gestion_panier.html.twig" %}
-    <script src="https://www.paypal.com/sdk/js?client-id={{ paypalClientId }}&currency=EUR"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id={{ paypalClientId }}&currency=EUR&locale=fr_FR"></script>
 
     <script>
         paypal.Buttons({
             enableStandardCardFields: true,
             createOrder: function (data, actions) {
                 return actions.order.create({
-                    intent: 'CAPTURE',
+                    intent: "CAPTURE",
                     payer: {
                         name: {
                             given_name: "{{ app.user.prenom }}",
                             surname: "{{ app.user.nom }}"
                         },
                         address: {
-                            address_line_1: '123 ABC Street',
-                            address_line_2: 'Apt 2',
-                            admin_area_2: 'San Jose',
-                            admin_area_1: 'CA',
-                            postal_code: '95121',
-                            country_code: 'FR'
+                            address_line_1: "{{ adresse[0].idPropriete.numeroRue ~ ' ' ~ adresse[0].idPropriete.idAdresse.libelle }}",
+                            address_line_2: "{{ adresse[0].idPropriete.infoComp }}",
+                            admin_area_1: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.libelle }}",
+                            admin_area_2: "{{ adresse[0].idPropriete.idAdresse.idVille.libelle }}",
+                            postal_code: "{{ adresse[0].idPropriete.idAdresse.idVille.codePostal }}",
+                            country_code: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.idPays.libelle }}"
                         },
                         email_address: "sb-43q2wk1821383@business.example.com",
                         phone: {
@@ -66,17 +67,32 @@
                     purchase_units: [
                         {
                             amount: {
-                                value: '{{ totalPanier }}',
-                                currency_code: 'EUR'
+                                currency_code: "EUR",
+                                value: {{ totalPanier + choixModeLivraison.prix }},
+                                breakdown: {
+                                    item_total: {
+                                        currency_code: "EUR",
+                                        value: {{ (totalPanier * 0.8) | number_format(2) }}
+                                    },
+                                    tax_total: {
+                                        currency_code: "EUR",
+                                        value: {{ (totalPanier * 0.2) | number_format(2) }}
+                                    },
+                                    shipping: {
+                                        currency_code: "EUR",
+                                        value: {{ choixModeLivraison.prix }}
+                                    }
+                                }
                             },
+                            items: {{ panierJSON | raw }},
                             shipping: {
                                 address: {
-                                    address_line_1: '2211 N First Street',
-                                    address_line_2: 'Building 17',
-                                    admin_area_2: 'San Jose',
-                                    admin_area_1: 'CA',
-                                    postal_code: '95131',
-                                    country_code: 'FR'
+                                    address_line_1: "{{ adresse[0].idPropriete.numeroRue ~ ' ' ~ adresse[0].idPropriete.idAdresse.libelle }}",
+                                    address_line_2: "{{ adresse[0].idPropriete.infoComp }}",
+                                    admin_area_1: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.libelle }}",
+                                    admin_area_2: "{{ adresse[0].idPropriete.idAdresse.idVille.libelle }}",
+                                    postal_code: "{{ adresse[0].idPropriete.idAdresse.idVille.codePostal }}",
+                                    country_code: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.idPays.libelle }}"
                                 }
                             },
                         }

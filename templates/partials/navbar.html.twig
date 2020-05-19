@@ -109,7 +109,7 @@
 {#                                                    <img class="resize_navbar" src="<?php echo $row['image']; ?>"#}
                                                     {#                                                         alt=""/>#}
                                                     {% if panier.idProduit.idTypeProduit.libelle != 'Consoles' %}
-                                                        <span class="badge {{ panier.idPlateforme.couleur }}">
+                                                        <span class="badge badge-plateforme" style="background-color: {{ panier.idPlateforme.couleur }}">
                                                         {{ panier.idPlateforme.libelle }}
                                                         </span>
                                                     {% endif %}
@@ -117,7 +117,7 @@
                                                     {% if panier.quantite > 1 %}
                                                         (&times;{{ panier.quantite }})
                                                     {% endif %}
-                                                           - {{ panier.prix * panier.quantite }}&euro;
+                                                           - {{ panier.prix }} &euro;
                                                 </span>
                                                 <span class="item-right">
                                                     <a href="#"

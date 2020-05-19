@@ -12,6 +12,7 @@ use App\Entity\Utilisateur;
 use App\Entity\Ville;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationTwoFormType;
+use App\Repository\PaysRepository;
 use App\Service\AdresseService;
 use App\Service\HabiterService;
 use App\Service\ImageService;
@@ -41,6 +42,10 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, ImageService $imageService, UtilisateurService $utilisateurService, Swift_Mailer $mailer, PartialsService $partialsService): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -96,8 +101,12 @@ class RegistrationController extends AbstractController
      * @param PartialsService $partialsService
      * @return Response
      */
-    public function registerTwo(Request $request, PaysService $paysService, RegionService $regionService, VilleService $villeService, AdresseService $adresseService, ProprieteService $proprieteService, HabiterService $habiterService, PartialsService $partialsService): Response
+    public function registerTwo(Request $request, PaysRepository $paysRepository, PaysService $paysService, RegionService $regionService, VilleService $villeService, AdresseService $adresseService, ProprieteService $proprieteService, HabiterService $habiterService, PartialsService $partialsService): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('index');
+        }
+
         $session = $request->getSession();
         if (!$session->has('userId')) {
             return $this->redirectToRoute('app_register');
@@ -108,13 +117,18 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $pays = new Pays();
-            $pays->setLibelle($form->get('pays')->getData());
-            $paysService->save($pays);
-            // Countries::getName('FR') -> France
+            $libellePays = $form->get('pays')->getData();
+            $pays = $paysRepository->findOneBy(['libelle' => $libellePays]);
+
+            if (!$pays) {
+                $pays = new Pays();
+                $pays->setLibelle($libellePays);
+                $paysService->save($pays);
+                // Countries::getName('FR') -> France
+            }
 
             $region = new Region();
-            $region->setLilbelle($form->get('region')->getData());
+            $region->setLibelle($form->get('region')->getData());
             $region->setIdPays($pays);
             $regionService->save($region);
 

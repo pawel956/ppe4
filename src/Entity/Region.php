@@ -24,9 +24,9 @@ class Region
     /**
      * @var string|null
      *
-     * @ORM\Column(name="lilbelle", type="string", length=255, nullable=true)
+     * @ORM\Column(name="libelle", type="string", length=255, nullable=true)
      */
-    private $lilbelle;
+    private $libelle;
 
     /**
      * @var \Pays
@@ -43,14 +43,14 @@ class Region
         return $this->id;
     }
 
-    public function getLilbelle(): ?string
+    public function getLibelle(): ?string
     {
-        return $this->lilbelle;
+        return $this->libelle;
     }
 
-    public function setLilbelle(?string $lilbelle): self
+    public function setLibelle(?string $libelle): self
     {
-        $this->lilbelle = $lilbelle;
+        $this->libelle = $libelle;
 
         return $this;
     }

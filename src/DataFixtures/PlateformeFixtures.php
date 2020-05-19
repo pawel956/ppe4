@@ -26,17 +26,17 @@ class PlateformeFixtures extends Fixture implements DependentFixtureInterface
             [
                 'idMarque' => $this->getReference('marquesony'),
                 'libelle' => 'PS4',
-                'couleur' => 'badge-primary'
+                'couleur' => '#3498db'
             ],
             [
                 'idMarque' => $this->getReference('marquemicrosoft'),
                 'libelle' => 'Xbox One',
-                'couleur' => 'badge-secondary'
+                'couleur' => '#2ecc71'
             ],
             [
                 'idMarque' => $this->getReference('marquesteam'),
                 'libelle' => 'PC',
-                'couleur' => 'badge-success'
+                'couleur' => '#95a5a6'
             ]
         ];
 

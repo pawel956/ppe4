@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Paiement{% endblock %}
+{% block title %}{{ parent() }} - Mode de livraison{% endblock %}
 
 {% block body %}
     {% include "partials/navbar.html.twig" %}
@@ -18,20 +18,22 @@
                 </p>
             </div>
             <div class="row">
+                {% include "panier/partials/panier.html.twig" %}
                 <div class="col-md-8 order-md-1">
                     <h4 class="mb-3">Mode de livraison</h4>
-                    <form>
+                    <form method="post">
                         <hr class="mb-4">
                         <div class="d-block my-3">
-                            {% for mode_livraison in modes_livraison %}
+                            {% for modeLivraison in modesLivraison %}
                                 <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input"
-                                           id="customRadio{{ mode_livraison.id }}" name="mode_livraison"
-                                           value="{{ mode_livraison.id }}">
-                                    <label class="custom-control-label" for="customRadio{{ mode_livraison.id }}">
-                                        {{ mode_livraison.libelle }} &plus;{{ mode_livraison.prix }}&euro; (livraison
+                                           id="customRadio{{ modeLivraison.id }}" name="mode_livraison"
+                                           value="{{ modeLivraison.id }}" required
+                                            {{ choixModeLivraison is not null and choixModeLivraison.id == modeLivraison.id ? 'checked' : '' }}>
+                                    <label class="custom-control-label" for="customRadio{{ modeLivraison.id }}">
+                                        {{ modeLivraison.libelle }} &plus;{{ modeLivraison.prix }} &euro; (livraison
                                         prévue le
-                                        {{ "now"|date_modify("+" ~ mode_livraison.delai ~ " day")|date("d/m/Y") }})
+                                        {{ "now"|date_modify("+" ~ modeLivraison.delai ~ " day")|date("d/m/Y") }})
                                     </label>
                                 </div>
                             {% endfor %}
@@ -40,6 +42,7 @@
                         <button class="btn btn-primary btn-lg btn-block" id="bouton" type="submit">Confirmer le choix du
                             mode de livraison
                         </button>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     </form>
                 </div>
             </div>

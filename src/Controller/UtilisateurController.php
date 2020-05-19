@@ -29,6 +29,8 @@ class UtilisateurController extends AbstractController
 
     /**
      * @Route("/new", name="utilisateur_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -52,6 +54,8 @@ class UtilisateurController extends AbstractController
 
     /**
      * @Route("/{id}", name="utilisateur_show", methods={"GET"})
+     * @param Utilisateur $utilisateur
+     * @return Response
      */
     public function show(Utilisateur $utilisateur): Response
     {
@@ -62,6 +66,9 @@ class UtilisateurController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="utilisateur_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Utilisateur $utilisateur
+     * @return Response
      */
     public function edit(Request $request, Utilisateur $utilisateur): Response
     {
@@ -82,6 +89,9 @@ class UtilisateurController extends AbstractController
 
     /**
      * @Route("/{id}", name="utilisateur_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Utilisateur $utilisateur
+     * @return Response
      */
     public function delete(Request $request, Utilisateur $utilisateur): Response
     {

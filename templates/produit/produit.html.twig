@@ -72,7 +72,8 @@
                                                    idPlateforme="{{ plateforme.id }}"
                                                    libellePlateforme="{{ plateforme.libelle }}" {{ plateforme.checked ? 'checked' : '' }}>
                                             <label class="custom-control-label" for="plateforme{{ plateforme.id }}">
-                                                <span class="badge {{ plateforme.couleur }}">
+                                                <span class="badge badge-plateforme"
+                                                      style="background-color: {{ plateforme.couleur }}">
                                                     {{ plateforme.libelle }}
                                                 </span>
                                             </label>

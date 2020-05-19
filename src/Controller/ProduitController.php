@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Constants;
-use App\Repository\CommandeRepository;
-use App\Repository\CompatibleRepository;
 use App\Repository\ImageRepository;
 use App\Repository\PlateformeRepository;
 use App\Repository\ProduitRepository;

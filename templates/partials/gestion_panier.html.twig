@@ -40,7 +40,7 @@
                         }
 
                         data.panier.contenu.forEach(produit => {
-                            plateforme = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '<span class="badge ' + produit.idPlateforme.couleur + '">' + produit.idPlateforme.libelle + '</span> ' : '';
+                            plateforme = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '<span class="badge badge-plateforme" style="background-color: ' + produit.idPlateforme.couleur + '">' + produit.idPlateforme.libelle + '</span> ' : '';
                             qte = produit.quantite > 1 ? ' (×' + produit.quantite + ')' : '';
                             typeProduit = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' + produit.idProduit.idTypeProduit.libelle : '';
 
@@ -50,7 +50,7 @@
                                 plateforme +
                                 produit.idProduit.libelle +
                                 qte +
-                                ' - ' + Math.round(produit.prix * produit.quantite * 100) / 100 + '&euro;' +
+                                ' - ' + produit.prix + ' &euro;' +
                                 '</span>' +
                                 '<span class="item-right">' +
                                 '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" idPlateforme="' + produit.idPlateforme.id + '" libelle="' + produit.idProduit.libelle + '" libellePlateforme="' + produit.idPlateforme.libelle + '" ' + typeProduit + '>&times;</a>' +
@@ -106,7 +106,7 @@
                             contenu_panier.remove();
                         } else {
                             data.panier.contenu.forEach(produit => {
-                                plateforme = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '<span class="badge ' + produit.idPlateforme.couleur + '">' + produit.idPlateforme.libelle + '</span> ' : '';
+                                plateforme = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '<span class="badge badge-plateforme" style="background-color: ' + produit.idPlateforme.couleur + '">' + produit.idPlateforme.libelle + '</span> ' : '';
                                 qte = produit.quantite > 1 ? ' (×' + produit.quantite + ')\n' : '';
                                 typeProduit = produit.idProduit.idTypeProduit.libelle != 'Consoles' ? 'libelleTypeProduit=' + produit.idProduit.idTypeProduit.libelle : '';
 
@@ -116,7 +116,7 @@
                                     plateforme +
                                     produit.idProduit.libelle +
                                     qte +
-                                    ' - ' + Math.round(produit.prix * produit.quantite * 100) / 100 + '&euro;' +
+                                    ' - ' + produit.prix + ' &euro;' +
                                     '</span>' +
                                     '<span class="item-right">' +
                                     '<a href="#" class="btn btn-xs btn-danger pull-right supprimer_panier" idProduit="' + produit.idProduit.id + '" idPlateforme="' + produit.idPlateforme.id + '" libelle="' + produit.idProduit.libelle + '" libellePlateforme="' + produit.idPlateforme.libelle + '" ' + typeProduit + '>&times;</a>' +

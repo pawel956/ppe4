@@ -1,0 +1,60 @@
+<div class="col-md-4 order-md-2 mb-4">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Votre panier</span>
+        <span class="badge badge-secondary badge-pill">{{ qtePanier }}</span>
+    </h4>
+    <ul class="list-group mb-3">
+        {% for produit in panier %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                    <h6 class="my-0">
+                                        <span class="badge badge-plateforme"
+                                              style="background-color: {{ produit.idPlateforme.couleur }}">
+                                            {{ produit.idPlateforme.libelle }}
+                                        </span>
+                        {{ produit.idProduit.libelle }}
+                    </h6>
+                    <small class="text-muted">&times;{{ produit.quantite }}</small>
+                </div>
+                <span class="text-muted">{{ produit.prix }} &euro;</span>
+            </li>
+        {% endfor %}
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <br/>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+                <h6 class="my-0">Nombre d'articles</h6>
+            </div>
+            <span class="text-muted">{{ qtePanier }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+                <h6 class="my-0">Sous-total</h6>
+            </div>
+            <span class="text-muted">{{ totalPanier }} &euro;</span>
+        </li>
+        {% if choixModeLivraison is not null %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                    <h6 class="my-0">Livraison ({{ choixModeLivraison.libelle }})</h6>
+                </div>
+                <span class="text-muted">&plus;{{ choixModeLivraison.prix }} &euro;</span>
+            </li>
+        {% endif %}
+        {#                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0">Code-promo (<?php echo $code_promo['code_promo']; ?>)</h6>
+                                    </div>
+                                    <span class="text-muted">&minus;<?php echo $code_promo_reduction; ?> &euro;</span>
+                                </li>#}
+        {% if choixModeLivraison is not null %}
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                    <h6 class="my-0">Total à payer</h6>
+                </div>
+                <span class="text-muted">{{ totalPanier + choixModeLivraison.prix }} &euro;</span>
+            </li>
+        {% endif %}
+    </ul>
+</div>
