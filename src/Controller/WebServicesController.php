@@ -8,6 +8,8 @@ use App\Entity\Utilisateur;
 use App\Repository\GenreRepository;
 use App\Service\ProduitService;
 use App\Service\UtilisateurService;
+use DateTime;
+use Exception;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,9 +68,11 @@ class WebServicesController extends AbstractController
     /**
      * @Route("/utilisateur/add", name="utilisateur_add", methods={"POST"})
      * @param Request $request
+     * @param GenreRepository $genreRepository
      * @param UtilisateurService $utilisateurService
      * @param Swift_Mailer $mailer
      * @return Response
+     * @throws Exception
      */
     public function webserviceUtilisateurAdd(Request $request, GenreRepository $genreRepository, UtilisateurService $utilisateurService, Swift_Mailer $mailer): Response
     {
@@ -80,7 +84,7 @@ class WebServicesController extends AbstractController
         $utilisateur->setEmail($request->request->get('email'));
         $utilisateur->setTelephone($request->request->get('telephone'));
         $utilisateur->setIdGenre($genre);
-        $utilisateur->setDateNaissance($request->request->get('dateNaissance'));
+        $utilisateur->setDateNaissance(new DateTime($request->request->get('dateNaissance')));
         $utilisateur->setPlainPassword($request->request->get('mdp'));
 
         $token = rand(100000, 999999);
