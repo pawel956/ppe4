@@ -2,8 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Constants;
 use App\Entity\Produit;
+use App\Entity\Utilisateur;
 use App\Service\ProduitService;
+use App\Service\UtilisateurService;
+use DateTime;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +58,48 @@ class WebServicesController extends AbstractController
         }
 
         $produitService->deleteFull($produit);
+
+        $array['error'] = false;
+        return new Response(json_encode($array));
+    }
+
+    /**
+     * @Route("/utilisateur/add", name="utilisateur_add", methods={"POST"})
+     * @param Request $request
+     * @param UtilisateurService $utilisateurService
+     * @param Swift_Mailer $mailer
+     * @return Response
+     */
+    public function webserviceUtilisateurAdd(Request $request, UtilisateurService $utilisateurService, Swift_Mailer $mailer): Response
+    {
+        $utilisateur = new Utilisateur();
+        $utilisateur->setNom($request->request->get('nom'));
+        $utilisateur->setPrenom($request->request->get('prenom'));
+        $utilisateur->setEmail($request->request->get('email'));
+        $utilisateur->setTelephone($request->request->get('telephone'));
+        $utilisateur->setIdGenre($request->request->get('genre'));
+        $utilisateur->setDateNaissance(new DateTime('2000-01-01'));
+        $utilisateur->setPlainPassword($request->request->get('mdp'));
+
+        $token = rand(100000, 999999);
+        $utilisateur->setToken(sha1($token));
+        $utilisateurService->save($utilisateur);
+
+        $data = [
+            'id' => $utilisateur->getId(),
+            'prenom' => $utilisateur->getPrenom(),
+            'token' => $token,
+            'courriel' => Constants::EMAIL
+        ];
+
+        $message = (new Swift_Message('Confirmation de votre compte ' . array_values(Constants::EMAIL)[0]))
+            ->setFrom(Constants::EMAIL)
+            ->setTo($utilisateur->getEmail())
+            ->setBody($this->renderView('registration/confirmation_email.html.twig', [
+                'data' => $data
+            ]), 'text/html');
+
+        $mailer->send($message);
 
         $array['error'] = false;
         return new Response(json_encode($array));
