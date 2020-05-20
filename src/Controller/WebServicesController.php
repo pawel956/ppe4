@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Constants;
 use App\Entity\Produit;
 use App\Entity\Utilisateur;
+use App\Repository\GenreRepository;
 use App\Service\ProduitService;
 use App\Service\UtilisateurService;
-use DateTime;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,15 +70,17 @@ class WebServicesController extends AbstractController
      * @param Swift_Mailer $mailer
      * @return Response
      */
-    public function webserviceUtilisateurAdd(Request $request, UtilisateurService $utilisateurService, Swift_Mailer $mailer): Response
+    public function webserviceUtilisateurAdd(Request $request, GenreRepository $genreRepository, UtilisateurService $utilisateurService, Swift_Mailer $mailer): Response
     {
+        $genre = $genreRepository->findOneBy(['libelle' => $request->request->get('genre')]);
+
         $utilisateur = new Utilisateur();
         $utilisateur->setNom($request->request->get('nom'));
         $utilisateur->setPrenom($request->request->get('prenom'));
         $utilisateur->setEmail($request->request->get('email'));
         $utilisateur->setTelephone($request->request->get('telephone'));
-        $utilisateur->setIdGenre($request->request->get('genre'));
-        $utilisateur->setDateNaissance(new DateTime('2000-01-01'));
+        $utilisateur->setIdGenre($genre);
+        $utilisateur->setDateNaissance($request->request->get('dateNaissance'));
         $utilisateur->setPlainPassword($request->request->get('mdp'));
 
         $token = rand(100000, 999999);
