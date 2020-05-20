@@ -14,10 +14,15 @@ use App\Repository\ProprieteRepository;
 use App\Service\CommandeService;
 use App\Service\PartialsService;
 use DateTime;
+use Knp\Snappy\Pdf;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -108,8 +113,8 @@ class PanierController extends AbstractController
             /** @var Panier $produit */
             $panierJSON[$key] = [
                 'name' => $produit->getIdProduit()->getLibelle(),
-                'unit_amount' => ['currency_code' => 'EUR', 'value' => (float)number_format($produit->getPrix() * 0.8, 2)],
-                'tax' => ['currency_code' => 'EUR', 'value' => (float)number_format($produit->getPrix() * 0.2, 2)],
+                'unit_amount' => ['currency_code' => 'EUR', 'value' => (float)number_format($produit->getPrix(), 2)],
+//                'tax' => ['currency_code' => 'EUR', 'value' => (float)number_format($produit->getPrix() * 0.2, 2)],
                 'quantity' => $produit->getQuantite(),
                 'description' => $produit->getIdProduit()->getDescription(),
                 'category' => $produit->getIdProduit()->getIdTypeProduit()->getLibelle() != 'Cartes prépayées' ? 'PHYSICAL_GOODS' : 'DIGITAL_GOODS'
@@ -125,7 +130,7 @@ class PanierController extends AbstractController
             'qtePanier' => $panierRepository->numberProducts($data['commande']),
             'totalPanier' => $panierRepository->totalPanier($data['commande']),
             'choixModeLivraison' => $modeLivraisonRepository->findOneBy(['id' => $data['commande']->getIdModeLivraison()]),
-            'adresse' => $habiterRepository->getFullDefaultAddress($utilisateur),
+            'adresse' => $habiterRepository->getFullDefaultAddress($utilisateur)[0],
             'paypalClientId' => Constants::PAYPAL_CLIENT_ID
         ]);
     }
@@ -134,23 +139,54 @@ class PanierController extends AbstractController
      * @Route("/paiement_success", name="paiement_success")
      * @param CommandeRepository $commandeRepository
      * @param PanierRepository $panierRepository
+     * @param Swift_Mailer $mailer
      * @param HabiterRepository $habiterRepository
+     * @param KernelInterface $appKernel
+     * @param Pdf $knpSnappy
      * @param ProprieteRepository $proprieteRepository
      * @param CommandeService $commandeService
      * @param PartialsService $partialsService
      * @return Response
      */
-    public function paiementSuccess(CommandeRepository $commandeRepository, PanierRepository $panierRepository, HabiterRepository $habiterRepository, ProprieteRepository $proprieteRepository, CommandeService $commandeService, PartialsService $partialsService)
+    public function paiementSuccess(CommandeRepository $commandeRepository, PanierRepository $panierRepository, Swift_Mailer $mailer, HabiterRepository $habiterRepository, KernelInterface $appKernel, Pdf $knpSnappy, ProprieteRepository $proprieteRepository, CommandeService $commandeService, PartialsService $partialsService)
     {
         $data = $this->getMainData($commandeRepository, $panierRepository);
+        /** @var Utilisateur $utilisateur */
+        $utilisateur = $this->getUser();
+        $total = $panierRepository->totalPanier($data['commande']);
 
-        // envoi mail + facture
+        $newFilename = uniqid(rand() . '_');
+        $newFilepath = $appKernel->getProjectDir() . Constants::FACTURE_FILE_DIRECTORY . '/' . $newFilename . '.pdf';
+
+        $knpSnappy->generateFromHtml(
+            $this->renderView('facture/commande.html.twig', [
+                'commande' => $data['commande'],
+                'panier' => $data['panier'],
+                'adresse' => $habiterRepository->getFullDefaultAddress($utilisateur)[0],
+                'totalPanier' => $total,
+                'courriel' => Constants::EMAIL
+            ]),
+            $newFilepath
+        );
+
+        $message = (new Swift_Message('Confirmation de votre commande ' . array_values(Constants::EMAIL)[0] . ' n°' . $data['commande']->getId() ))
+            ->setFrom(Constants::EMAIL)
+            ->setTo($utilisateur->getEmail())
+            ->setBody($this->renderView('panier/confirmation_email.html.twig', [
+                'commande' => $data['commande'],
+                'total' => $total,
+                'courriel' => Constants::EMAIL
+            ]), 'text/html')
+            ->attach(Swift_Attachment::fromPath($newFilepath, 'application/pdf'));
+
+        $mailer->send($message);
 
         $habiter = $habiterRepository->findOneBy(['idUtilisateur' => $this->getUser(), 'defaut' => true]);
         $propriete = $proprieteRepository->findOneBy(['id' => $habiter->getIdPropriete()]);
 
         $data['commande']->setIdPropriete($propriete);
         $data['commande']->setDateCommande(new DateTime());
+        $data['commande']->setFacturePdf($newFilename);
         $commandeService->save($data['commande']);
 
         return $this->render('panier/paiement_success.html.twig', [

@@ -1,0 +1,21 @@
+<p style="text-align: center; font-size: 18px">
+    <b>Bonjour {{ app.user.prenom }}</b>,
+</p>
+<br>
+<p style="text-align: center">
+    <b>
+        Nous vous remercions pour votre confiance et nous vous informons que votre facture de la commande
+        n°{{ commande.id }} d'un montant de {{ total }} &euro; est disponible en pièce jointe mais aussi sur le site
+        dans la section mes commandes.
+    </b>
+</p>
+<br>
+<p style="text-align: center; font-size: 18px">
+    <b>
+        A très bientôt !
+    </b>
+</p>
+<br>
+<p style="text-align: center; font-size: 18px">
+    <b>L'équipe {{ courriel[courriel|keys[0]] }}</b>
+</p>

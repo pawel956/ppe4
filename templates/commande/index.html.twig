@@ -1,0 +1,62 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - Mes commandes{% endblock %}
+
+{% block body %}
+    {% include "partials/navbar.html.twig" %}
+    <br><br><br><br><br>
+    <div class="content">
+        {% if commandes | length > 0 %}
+            {% for commande in commandes %}
+                <div class="card">
+                    <div class="card-header" style="overflow:auto;">
+                        <div class="col-md-3" style="float:left;">
+                            <span class="uppercase" style="color:#555!important">Commande effectué le</span>
+                            <br>
+                            {{ commande.dateCommande|date('d/m/Y') }}
+                        </div>
+                        <div class="col-md-3 uppercase" style="float:right;">
+                            <span style="color:#555!important">N&deg; DE COMMANDE</span>
+                            <br>
+                            {{ commande.id }}
+                        </div>
+                        <div class="col-md-3 uppercase" style="overflow:auto;">
+                            <span class="uppercase" style="color:#555!important">Total payé</span>
+                            <br>
+                            {{ totauxCommandes[commande.id] }} &euro;
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Livraison le {{ commande.dateLivraison|date('d/m/Y') }}
+                            par {{ commande.idModeLivraison.libelle }} ({{ commande.idModeLivraison.prix }} &euro;)</h5>
+                        <br>
+                        <div class="col-md-4" style="float:right;">
+                            <a class="btn btn-success btn-block"
+                               href="{{ path('mes_commandes_voir_pdf', {id: commande.id}) }}" target="_blank">Voir la
+                                facture (PDF)</a>
+                            <a class="btn btn-primary btn-block" style="margin-bottom:15px;" href="">Suivre votre
+                                colis</a>
+                            <a class="btn btn-secondary btn-block" href="">Retourner ou remplacer des articles</a>
+                            <a class="btn btn-secondary btn-block"
+                               href="/PPE_Projet/contact.php?objet=pb_commande&ref_commande=<?php echo $commandes['identifiant_commande']; ?>">Problème
+                                avec la commande</a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        {% else %}
+            <div class="row justify-content-center">
+                <h3>Vous n'avez pas de commande.</h3>
+                <br>
+                <br>
+            </div>
+        {% endif %}
+    </div>
+    {% include "partials/footer.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include "partials/gestion_panier.html.twig" %}
+{% endblock %}

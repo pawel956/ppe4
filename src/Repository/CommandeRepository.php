@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Commande;
+use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -17,6 +18,17 @@ class CommandeRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Commande::class);
+    }
+
+    public function findAllCommandes(Utilisateur $utilisateur)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.idUtilisateur = :idUtilisateur')
+            ->setParameter('idUtilisateur', $utilisateur)
+            ->andWhere('c.dateCommande IS NOT NULL')
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

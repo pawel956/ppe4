@@ -8,6 +8,7 @@ class ConstantsExample
     public const PRODUCT_PICTURES_DIRECTORY = '/public/uploads/product_pictures';
     public const PRODUCT_PICTURES_DIRECTORY_TWIG = 'uploads/product_pictures/';
     public const PROFILE_PICTURES_DIRECTORY = '/public/uploads/profile_pictures';
+    public const FACTURE_FILE_DIRECTORY = '/public/uploads/facture';
     public const EMAIL = ['gamesmarket@gmail.com' => 'Games Market'];
     public const PAYPAL_CLIENT_ID = '';
 }

@@ -64,13 +64,13 @@ class RegistrationController extends AbstractController
             $utilisateurService->save($user);
 
             $data = [
-                'domain' => $request->getHost(),
                 'id' => $user->getId(),
                 'prenom' => $user->getPrenom(),
-                'token' => $token
+                'token' => $token,
+                'courriel' => Constants::EMAIL
             ];
 
-            $message = (new Swift_Message('Confirmation de votre compte Games Market'))
+            $message = (new Swift_Message('Confirmation de votre compte ' . array_values(Constants::EMAIL)[0]))
                 ->setFrom(Constants::EMAIL)
                 ->setTo($user->getEmail())
                 ->setBody($this->renderView('registration/confirmation_email.html.twig', [
@@ -92,6 +92,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register_two", name="app_register_two")
      * @param Request $request
+     * @param PaysRepository $paysRepository
      * @param PaysService $paysService
      * @param RegionService $regionService
      * @param VilleService $villeService

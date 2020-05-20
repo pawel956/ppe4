@@ -38,7 +38,7 @@ class Ville
     /**
      * @var \Region
      *
-     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\ManyToOne(targetEntity="Region", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_region", referencedColumnName="id")
      * })

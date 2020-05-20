@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Paiement{% endblock %}
+{% block title %}{{ parent() }} - Paiement accepté{% endblock %}
 
 {% block body %}
     {% include "partials/navbar.html.twig" %}
@@ -19,7 +19,7 @@
                     formulaire de contact.
                 </p>
                 <br>
-                <a class="btn btn-primary btn-lg btn-block" href="#">Mes commandes</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{{ path('mes_commandes_index') }}">Mes commandes</a>
             </div>
         </div>
     </div>

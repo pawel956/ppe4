@@ -38,7 +38,7 @@ class Propriete
     /**
      * @var \Adresse
      *
-     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\ManyToOne(targetEntity="Adresse", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_adresse", referencedColumnName="id")
      * })

@@ -45,7 +45,7 @@ class Commande
     /**
      * @var \ModeLivraison
      *
-     * @ORM\ManyToOne(targetEntity="ModeLivraison")
+     * @ORM\ManyToOne(targetEntity="ModeLivraison", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_mode_livraison", referencedColumnName="id")
      * })
@@ -65,7 +65,7 @@ class Commande
     /**
      * @var \Utilisateur
      *
-     * @ORM\ManyToOne(targetEntity="Utilisateur")
+     * @ORM\ManyToOne(targetEntity="Utilisateur", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_utilisateur", referencedColumnName="id")
      * })
@@ -75,7 +75,7 @@ class Commande
     /**
      * @var \Propriete
      *
-     * @ORM\ManyToOne(targetEntity="Propriete")
+     * @ORM\ManyToOne(targetEntity="Propriete", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_propriete", referencedColumnName="id")
      * })

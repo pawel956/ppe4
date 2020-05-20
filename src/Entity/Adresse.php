@@ -31,7 +31,7 @@ class Adresse
     /**
      * @var \Ville
      *
-     * @ORM\ManyToOne(targetEntity="Ville")
+     * @ORM\ManyToOne(targetEntity="Ville", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_ville", referencedColumnName="id")
      * })

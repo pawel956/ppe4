@@ -49,12 +49,12 @@
                             surname: "{{ app.user.nom }}"
                         },
                         address: {
-                            address_line_1: "{{ adresse[0].idPropriete.numeroRue ~ ' ' ~ adresse[0].idPropriete.idAdresse.libelle }}",
-                            address_line_2: "{{ adresse[0].idPropriete.infoComp }}",
-                            admin_area_1: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.libelle }}",
-                            admin_area_2: "{{ adresse[0].idPropriete.idAdresse.idVille.libelle }}",
-                            postal_code: "{{ adresse[0].idPropriete.idAdresse.idVille.codePostal }}",
-                            country_code: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.idPays.libelle }}"
+                            address_line_1: "{{ adresse.idPropriete.numeroRue ~ ' ' ~ adresse.idPropriete.idAdresse.libelle }}",
+                            address_line_2: "{{ adresse.idPropriete.infoComp }}",
+                            admin_area_1: "{{ adresse.idPropriete.idAdresse.idVille.idRegion.libelle }}",
+                            admin_area_2: "{{ adresse.idPropriete.idAdresse.idVille.libelle }}",
+                            postal_code: "{{ adresse.idPropriete.idAdresse.idVille.codePostal }}",
+                            country_code: "{{ adresse.idPropriete.idAdresse.idVille.idRegion.idPays.libelle }}"
                         },
                         email_address: "sb-43q2wk1821383@business.example.com",
                         phone: {
@@ -72,11 +72,7 @@
                                 breakdown: {
                                     item_total: {
                                         currency_code: "EUR",
-                                        value: {{ (totalPanier * 0.8) | number_format(2) }}
-                                    },
-                                    tax_total: {
-                                        currency_code: "EUR",
-                                        value: {{ (totalPanier * 0.2) | number_format(2) }}
+                                        value: {{ (totalPanier) | number_format(2) }}
                                     },
                                     shipping: {
                                         currency_code: "EUR",
@@ -87,12 +83,12 @@
                             items: {{ panierJSON | raw }},
                             shipping: {
                                 address: {
-                                    address_line_1: "{{ adresse[0].idPropriete.numeroRue ~ ' ' ~ adresse[0].idPropriete.idAdresse.libelle }}",
-                                    address_line_2: "{{ adresse[0].idPropriete.infoComp }}",
-                                    admin_area_1: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.libelle }}",
-                                    admin_area_2: "{{ adresse[0].idPropriete.idAdresse.idVille.libelle }}",
-                                    postal_code: "{{ adresse[0].idPropriete.idAdresse.idVille.codePostal }}",
-                                    country_code: "{{ adresse[0].idPropriete.idAdresse.idVille.idRegion.idPays.libelle }}"
+                                    address_line_1: "{{ adresse.idPropriete.numeroRue ~ ' ' ~ adresse.idPropriete.idAdresse.libelle }}",
+                                    address_line_2: "{{ adresse.idPropriete.infoComp }}",
+                                    admin_area_1: "{{ adresse.idPropriete.idAdresse.idVille.idRegion.libelle }}",
+                                    admin_area_2: "{{ adresse.idPropriete.idAdresse.idVille.libelle }}",
+                                    postal_code: "{{ adresse.idPropriete.idAdresse.idVille.codePostal }}",
+                                    country_code: "{{ adresse.idPropriete.idAdresse.idVille.idRegion.idPays.libelle }}"
                                 }
                             },
                         }

@@ -3,6 +3,7 @@
 
 namespace App\Service;
 
+use App\Entity\Constants;
 use App\Repository\MarqueRepository;
 use App\Repository\PlateformeRepository;
 use App\Repository\TypeProduitRepository;
@@ -26,7 +27,8 @@ class PartialsService extends AbstractController
         $data = [
             'plateformes' => $this->plateformeRepository->findAll(),
             'typeProduits' => $this->typeProduitRepository->findAll(),
-            'year' => date('Y')
+            'year' => date('Y'),
+            'nom' => array_values(Constants::EMAIL)[0]
         ];
 
         if(!is_null($this->getUser())){
