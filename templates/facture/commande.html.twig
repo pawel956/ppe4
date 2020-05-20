@@ -44,7 +44,7 @@
             {% for produit in panier %}
                 <tr>
                     <td class="service">
-                        {{ produit.idProduit.libelle ~ ' ' ~ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '(' ~ produit.idPlateforme.libelle ~ ')' : '' }}
+                        {{ produit.idProduit.libelle }} {{ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '(' ~ produit.idPlateforme.libelle ~ ')' : '' }}
                     </td>
                     <td class="desc">{{ produit.idProduit.description }}</td>
                     <td class="unit">{{ (produit.prix * 0.8) | round(2) }} &euro;</td>
