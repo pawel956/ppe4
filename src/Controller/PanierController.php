@@ -13,7 +13,9 @@ use App\Repository\ProduitRepository;
 use App\Repository\ProprieteRepository;
 use App\Service\CommandeService;
 use App\Service\PartialsService;
+use DateInterval;
 use DateTime;
+use Exception;
 use Knp\Snappy\Pdf;
 use Swift_Attachment;
 use Swift_Mailer;
@@ -48,6 +50,7 @@ class PanierController extends AbstractController
             'images' => $produitRepository->findProductsPictures($data['panier']),
             'qtePanier' => $panierRepository->numberProducts($data['commande']),
             'totalPanier' => $panierRepository->totalPanier($data['commande']),
+            'commande' => $data['commande'],
             'productPicturesDirectory' => Constants::PRODUCT_PICTURES_DIRECTORY_TWIG
         ]);
     }
@@ -113,8 +116,8 @@ class PanierController extends AbstractController
             /** @var Panier $produit */
             $panierJSON[$key] = [
                 'name' => $produit->getIdProduit()->getLibelle(),
-                'unit_amount' => ['currency_code' => 'EUR', 'value' => (float)number_format($produit->getPrix(), 2)],
-//                'tax' => ['currency_code' => 'EUR', 'value' => (float)number_format($produit->getPrix() * 0.2, 2)],
+                'unit_amount' => ['currency_code' => 'EUR', 'value' => (float)$produit->getPrix()],
+//                'tax' => ['currency_code' => 'EUR', 'value' => (float)round($produit->getPrix() * 0.2, 2)],
                 'quantity' => $produit->getQuantite(),
                 'description' => $produit->getIdProduit()->getDescription(),
                 'category' => $produit->getIdProduit()->getIdTypeProduit()->getLibelle() != 'Cartes prépayées' ? 'PHYSICAL_GOODS' : 'DIGITAL_GOODS'
@@ -147,6 +150,7 @@ class PanierController extends AbstractController
      * @param CommandeService $commandeService
      * @param PartialsService $partialsService
      * @return Response
+     * @throws Exception
      */
     public function paiementSuccess(CommandeRepository $commandeRepository, PanierRepository $panierRepository, Swift_Mailer $mailer, HabiterRepository $habiterRepository, KernelInterface $appKernel, Pdf $knpSnappy, ProprieteRepository $proprieteRepository, CommandeService $commandeService, PartialsService $partialsService)
     {
@@ -169,7 +173,7 @@ class PanierController extends AbstractController
             $newFilepath
         );
 
-        $message = (new Swift_Message('Confirmation de votre commande ' . array_values(Constants::EMAIL)[0] . ' n°' . $data['commande']->getId() ))
+        $message = (new Swift_Message('Confirmation de votre commande ' . array_values(Constants::EMAIL)[0] . ' n°' . $data['commande']->getId()))
             ->setFrom(Constants::EMAIL)
             ->setTo($utilisateur->getEmail())
             ->setBody($this->renderView('panier/confirmation_email.html.twig', [
@@ -186,6 +190,7 @@ class PanierController extends AbstractController
 
         $data['commande']->setIdPropriete($propriete);
         $data['commande']->setDateCommande(new DateTime());
+        $data['commande']->setDateLivraison((new DateTime())->add(new DateInterval('P' . $data['commande']->getIdModeLivraison()->getDelai() . 'D')));
         $data['commande']->setFacturePdf($newFilename);
         $commandeService->save($data['commande']);
 

@@ -19,9 +19,12 @@ use Doctrine\ORM\Query;
  */
 class ProduitRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    protected $imageRepository;
+
+    public function __construct(ManagerRegistry $registry, ImageRepository $imageRepository)
     {
         parent::__construct($registry, Produit::class);
+        $this->imageRepository = $imageRepository;
     }
 
     /**
@@ -29,7 +32,7 @@ class ProduitRepository extends ServiceEntityRepository
      */
     public function findLastFourProducts()
     {
-        $produits =$this->getEntityManager()
+        $produits = $this->getEntityManager()
             ->getRepository(Compatible::class)
             ->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
@@ -53,13 +56,9 @@ class ProduitRepository extends ServiceEntityRepository
 
         foreach ($produits as $produit) {
             $idProduit = $produit->getIdProduit()->getId();
-            $images[$idProduit] = $this->getEntityManager()
-                ->getRepository(Image::class)
-                ->createQueryBuilder('i')
-                ->where('i.idProduit = :idProduit')
-                ->setParameter('idProduit', $idProduit)
-                ->getQuery()
-                ->getResult();
+            if (!isset($images[$idProduit])) {
+                $images[$idProduit] = $this->imageRepository->findOneBy(['idProduit' => $idProduit]);
+            }
         }
 
         return $images;
@@ -90,7 +89,8 @@ class ProduitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findPlatformCompatibleProduct(Produit $produit){
+    public function findPlatformCompatibleProduct(Produit $produit)
+    {
         return $this->getEntityManager()
             ->getRepository(Compatible::class)
             ->createQueryBuilder('c')

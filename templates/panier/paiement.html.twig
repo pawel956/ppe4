@@ -68,15 +68,15 @@
                         {
                             amount: {
                                 currency_code: "EUR",
-                                value: {{ totalPanier + choixModeLivraison.prix }},
+                                value: {{ (totalPanier + choixModeLivraison.prix) | round(2) }},
                                 breakdown: {
                                     item_total: {
                                         currency_code: "EUR",
-                                        value: {{ (totalPanier) | number_format(2) }}
+                                        value: {{ totalPanier | round(2) }}
                                     },
                                     shipping: {
                                         currency_code: "EUR",
-                                        value: {{ choixModeLivraison.prix }}
+                                        value: {{ choixModeLivraison.prix | round(2) }}
                                     }
                                 }
                             },

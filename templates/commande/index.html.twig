@@ -27,9 +27,32 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Livraison le {{ commande.dateLivraison|date('d/m/Y') }}
-                            par {{ commande.idModeLivraison.libelle }} ({{ commande.idModeLivraison.prix }} &euro;)</h5>
+                        <h5 class="card-title">Livraison {{ date() < date(commande.dateLivraison) ? 'prévue' : '' }}
+                            le {{ commande.dateLivraison|date('d/m/Y') }} par {{ commande.idModeLivraison.libelle }}
+                            ({{ commande.idModeLivraison.prix }} &euro;)</h5>
                         <br>
+                        {% for produit in panier[commande.id] %}
+                            <div class="col-md-2" style="float:left; text-align: center;">
+                                <img class="resize_commandes"
+                                     src="{{ asset(productPicturesDirectory ~ images[produit.idProduit.id].libelle ~ '.' ~ images[produit.idProduit.id].idTypeImage.libelle) }}">
+                            </div>
+                            <br><br>
+                            <div class="col-md-8" style="overflow:auto;">
+                                            <span>
+                                                <strong>
+                                                    {{ produit.idProduit.libelle }}
+                                                    {% if produit.quantite > 1 %}
+                                                        &times; {{ produit.quantite }}
+                                                    {% endif %}
+                                                </strong>
+                                            </span>
+                                &#58; {{ produit.prix }} &euro;
+                                {% if produit.quantite > 1 %}
+                                    &rarr; {{ produit.prix * produit.quantite }} &euro;
+                                {% endif %}
+                            </div>
+                            <br><br><br>
+                        {% endfor %}
                         <div class="col-md-4" style="float:right;">
                             <a class="btn btn-success btn-block"
                                href="{{ path('mes_commandes_voir_pdf', {id: commande.id}) }}" target="_blank">Voir la

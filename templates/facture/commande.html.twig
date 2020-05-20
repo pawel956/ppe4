@@ -22,7 +22,7 @@
             <div><span>DATE</span> {{ commande.dateCommande|date('d/m/Y') }}</div>
             <div><span>CLIENT</span> {{ app.user.prenom ~ ' ' ~ app.user.nom }}</div>
             <div>
-                <span>ADRESSE</span> {{ adresse.idPropriete.numeroRue ~ ' ' ~ adresse.idPropriete.idAdresse.libelle | capitalize ~ ', ' ~ adresse.idPropriete.idAdresse.idVille.codePostal ~ ' ' ~ adresse.idPropriete.idAdresse.idVille.libelle | capitalize ~ ', ' ~ adresse.idPropriete.idAdresse.idVille.idRegion.idPays.libelle | country_name }}
+                <span>ADRESSE</span> {{ adresse.idPropriete.numeroRue ~ ' ' ~ adresse.idPropriete.idAdresse.libelle ~ ', ' ~ adresse.idPropriete.idAdresse.idVille.codePostal ~ ' ' ~ adresse.idPropriete.idAdresse.idVille.libelle ~ ', ' ~ adresse.idPropriete.idAdresse.idVille.idRegion.idPays.libelle | country_name }}
             </div>
             <div><span>COURRIEL</span> <a href="mailto:{{ app.user.email }}">{{ app.user.email }}</a></div>
         </div>
@@ -43,22 +43,24 @@
             <tbody>
             {% for produit in panier %}
                 <tr>
-                    <td class="service">{{ produit.idProduit.libelle }} ({{ produit.idPlateforme.libelle }})</td>
+                    <td class="service">
+                        {{ produit.idProduit.libelle ~ ' ' ~ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? '(' ~ produit.idPlateforme.libelle ~ ')' : '' }}
+                    </td>
                     <td class="desc">{{ produit.idProduit.description }}</td>
-                    <td class="unit">{{ (produit.prix * 0.8) | number_format(2) }} &euro;</td>
+                    <td class="unit">{{ (produit.prix * 0.8) | round(2) }} &euro;</td>
                     <td class="qty">{{ produit.quantite }}</td>
-                    <td class="total">{{ ((produit.prix * produit.quantite) * 0.8) | number_format(2) }} &euro;</td>
-                    <td class="total">{{ ((produit.prix * produit.quantite) * 0.2) | number_format(2) }} &euro;</td>
-                    <td class="total">{{ (produit.prix * produit.quantite) | number_format(2) }} &euro;</td>
+                    <td class="total">{{ ((produit.prix * produit.quantite) * 0.8) | round(2) }} &euro;</td>
+                    <td class="total">{{ ((produit.prix * produit.quantite) * 0.2) | round(2) }} &euro;</td>
+                    <td class="total">{{ (produit.prix * produit.quantite) | round(2) }} &euro;</td>
                 </tr>
             {% endfor %}
             <tr>
                 <td colspan="6">SOUS-TOTAL</td>
-                <td class="total">{{ (totalPanier * 0.8) | number_format(2) }} &euro;</td>
+                <td class="total">{{ (totalPanier * 0.8) | round(2) }} &euro;</td>
             </tr>
             <tr>
                 <td colspan="6">TAXE (20&percnt;)</td>
-                <td class="total">{{ (totalPanier * 0.2) | number_format(2) }} &euro;</td>
+                <td class="total">{{ (totalPanier * 0.2) | round(2) }} &euro;</td>
             </tr>
             <tr>
                 <td colspan="6">LIVRAISON ({{ commande.idModeLivraison.libelle | upper }})</td>

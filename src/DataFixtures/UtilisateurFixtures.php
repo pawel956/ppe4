@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Utilisateur;
 use App\Service\UtilisateurService;
+use Cocur\Slugify\SlugifyInterface;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -11,34 +13,56 @@ use Doctrine\Persistence\ObjectManager;
 class UtilisateurFixtures extends Fixture implements DependentFixtureInterface
 {
     protected $utilisateurService;
+    protected $slugify;
 
-    public function __construct(UtilisateurService $utilisateurService)
+    public function __construct(UtilisateurService $utilisateurService, SlugifyInterface $slugify)
     {
         $this->utilisateurService = $utilisateurService;
+        $this->slugify = $slugify;
     }
 
     public function load(ObjectManager $entityManager)
     {
-        $utilisateur = new Utilisateur();
-        $utilisateur->setNom('Martinez');
-        $utilisateur->setPrenom('Manuel');
-        $utilisateur->setEmail('user@gmail.com');
-        $utilisateur->setTelephone('0101010101');
-        $utilisateur->setDateNaissance(new \DateTime('1976-01-01'));
-        $utilisateur->setPlainPassword('123456');
-        $utilisateur->setIdGenre($this->getReference('genre'));
-        $this->utilisateurService->save($utilisateur);
+        $lesUtilisateurs = [
+            [
+                'nom' => 'Martinez',
+                'prenom' => 'Manuel',
+                'courriel' => 'user@gmail.com',
+                'telephone' => '0101010101',
+                'dateNaissance' => new DateTime('1976-01-01'),
+                'mdp' => '123456',
+                'idGenre' => $this->getReference('genrehomme')
+            ],
+            [
+                'roles' => ['ROLE_ADMIN'],
+                'nom' => 'Nadal',
+                'prenom' => 'Cyrille',
+                'courriel' => 'admin@gmail.com',
+                'telephone' => '0202020202',
+                'dateNaissance' => new DateTime('1976-01-02'),
+                'mdp' => '123456',
+                'idGenre' => $this->getReference('genrehomme')
+            ]
+        ];
 
-        $utilisateur = new Utilisateur();
-        $utilisateur->setRoles(['ROLE_ADMIN']);
-        $utilisateur->setNom('Nadal');
-        $utilisateur->setPrenom('Cyrille');
-        $utilisateur->setEmail('admin@gmail.com');
-        $utilisateur->setTelephone('0202020202');
-        $utilisateur->setDateNaissance(new \DateTime('1976-01-02'));
-        $utilisateur->setPlainPassword('123456');
-        $utilisateur->setIdGenre($this->getReference('genre'));
-        $this->utilisateurService->save($utilisateur);
+        foreach ($lesUtilisateurs as $unUtilisateur) {
+            $utilisateur = new Utilisateur();
+
+            if(isset($unUtilisateur['roles'])){
+                $utilisateur->setRoles($unUtilisateur['roles']);
+            }
+
+            $utilisateur->setNom($unUtilisateur['nom']);
+            $utilisateur->setPrenom($unUtilisateur['prenom']);
+            $utilisateur->setEmail($unUtilisateur['courriel']);
+            $utilisateur->setTelephone($unUtilisateur['telephone']);
+            $utilisateur->setDateNaissance($unUtilisateur['dateNaissance']);
+            $utilisateur->setPlainPassword($unUtilisateur['mdp']);
+            $utilisateur->setIdGenre($unUtilisateur['idGenre']);
+            $this->utilisateurService->save($utilisateur);
+
+            $this->addReference('utilisateur' . $this->slugify->slugify($utilisateur->getEmail()), $utilisateur);
+        }
     }
 
     public function getDependencies()

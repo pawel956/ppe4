@@ -14,7 +14,7 @@
                         <div class="card">
                             <div class="parent">
                                 <img class="card-img-top padding resize"
-                                     src="{{ asset(productPicturesDirectory ~ images[produit.idProduit.id][0].libelle ~ '.' ~ images[produit.idProduit.id][0].idTypeImage.libelle) }}">
+                                     src="{{ asset(productPicturesDirectory ~ images[produit.idProduit.id].libelle ~ '.' ~ images[produit.idProduit.id].idTypeImage.libelle) }}">
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ produit.idProduit.idTypeProduit.libelle != 'Consoles' ? ('<span class="badge badge-plateforme" style="background-color: ' ~ produit.idPlateforme.couleur ~ '">' ~ produit.idPlateforme.libelle ~ '</span> ') | raw : '' }}{{ produit.idProduit.libelle }}</h5>

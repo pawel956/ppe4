@@ -40,7 +40,7 @@ class PanierRepository extends ServiceEntityRepository
      * @param bool $array
      * @return int|mixed|string
      */
-    public function contenuPanier(Commande $commande, bool $array)
+    public function contenuPanier(Commande $commande, bool $array = false)
     {
         return $this->createQueryBuilder('p')
             ->select('p, pr, t, pl')
